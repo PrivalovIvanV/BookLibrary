@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/addImageForBook}" th:method="post" enctype="multipart/form-data">
+    <input type="text" th:value="${num}" name="book_id" id="q">
+    <label for="q">Введи id</label>
+    <input type="file" name="img">
+
+    <input type="submit" value="Жми, пидор"></input>
+</form>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<th:block th:fragment="bookIsAccess">
+    <form class="take-book-button" th:action="@{/catalog/{id}(id = ${book.getId()})}" th:method="POST">
+        <input type="submit" value="Взять на 15 дней">
+    </form>
+</th:block>
+
+<th:block th:fragment="bookIsNotAccess">
+<th:block th:if="${isAuth}">
+
+    <div th:if="${isBookOwnedByCurrentUser}" th:style="'color: red'">
+        <div class="book-statys" th:if="${book.isOverdue()}" th:text="${'*Книга просрочена на ' + book.intervalDate() + ' суток'}"></div>
+        <div class="book-statys" th:unless="${book.isOverdue()}" th:text="${'*Эта книга у вас в библиотеке'}"></div>
+
+    </div>
+    <div class="book-statys" th:unless="${isBookOwnedByCurrentUser}" th:style="'color: red'">*Эту книгу кто-то уже забрал(</div>
+
+</th:block>
+<th:block th:unless="${isAuth}">
+
+    <div class="book-statys" th:style="'color: red'">*Эту книгу кто-то уже забрал(</div>
+
+</th:block>
+</th:block>
+

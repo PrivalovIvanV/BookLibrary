@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" class="page">
+<head>
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <link rel="stylesheet" th:href="@{/css/general.css}">
+    <link rel="stylesheet" th:href="@{/css/catalog.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-body">
+<th:block th:insert="~{fragments/mainHeader :: (${isAuth} ? 'ForAuthPerson' : 'isNotAuthPerson')}"></th:block>
+
+<main class="conteiner background-book main">
+    <th:block th:insert="~{fragments/bookCatalogFilter :: (${bookFilter.isHaveAFilter()} ? 'haveAFilter' : 'dontHaveAFilter')}"></th:block>
+
+
+
+    <section class="right-section">
+        <form action="" class="search">
+            <input type="search" name="q">
+            <button type="submit">
+                <img src="/img/catalog/RealSearch.png" alt="">
+            </button>
+        </form>
+
+        <ul class="for-sector" th:unless="${bookList.isEmpty()}">
+
+
+            <li th:each="book_item : ${bookList}" th:object="${book_item}">
+                <a th:href="@{/catalog/{id}(id = *{id})}">
+                <div class="book-item">
+                    <img th:src="@{/BookAvatar/{id}(id = *{id})}" width="90px" alt="">
+                    <div>
+                        <div>
+                            <div class="author" th:text="*{title}">Computer science</div>
+                            <div class="title" th:text="*{author}">Джек Лондон</div>
+                        </div>
+                        <div th:style="*{isAccess} ? 'color: green' : 'color: red'" th:text="*{isAccess} ? 'Есть в наличии' : 'Нет в наличии'">aaa</div>
+                    </div>
+                </div>
+                </a>
+            </li>
+
+
+<!--            <li th:each="book_item : ${bookList}" th:object="${book_item}">-->
+<!--                <img th:src="@{/BookAvatar/{id}(id = *{id})}"  width="42px"/>-->
+<!--                <a th:href="@{/catalog/{id}(id = *{id})}">-->
+<!--                    <div th:text="*{title}">aaa</div>-->
+<!--                </a>-->
+
+<!--                <div th:text="*{author}">aaa</div>-->
+<!--                <div th:style="*{isAccess} ? 'color: green' : 'color: red'" th:text="*{isAccess.toString()}">aaa</div>-->
+<!--            </li>-->
+        </ul>
+
+        <ul th:if="${bookList.isEmpty()}">
+            <h1>К сожалению мы ничего не нашли(</h1>
+        </ul>
+
+
+
+        <section class="page-navigation">
+            <ul>
+                <li th:each="int : ${PageIterator}" >
+                    <div th:if="${currentPage == int}" class="current-page">
+                        <span th:text="${int + 1}"></span>
+                    </div>
+                    <div th:unless="${currentPage == int}">
+                        <a th:text="${int + 1}" th:href="@{/catalog(page = ${int})}"></a>
+                    </div>
+                </li>
+
+            </ul>
+        </section>
+    </section>
+</main>
+
+<th:block th:insert="~{fragments/footer :: main-footer}"></th:block>
+
+</body>
+</html>

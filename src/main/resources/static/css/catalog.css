@@ -1,0 +1,146 @@
+
+h1{
+  font-size: 40px;
+  margin-left: 40px;
+}
+
+
+
+.main-content h3{
+font-size: 30px;
+
+}
+.for-sector a{
+  color: black;
+}
+.for-sector{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 326px);
+grid-column-gap: 0px;
+
+  grid-template-rows: repeat(auto-fill, 150px);
+}
+
+
+
+.main{
+  min-height: 1500px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: max-content auto;
+  justify-items: center;
+
+  grid-column-gap: 1vw;
+/*  line-height: 81%;*/
+}
+
+
+.form{
+  margin-top: 3vw;
+  font-size: 20px;
+  line-height: 100%;
+
+  display: grid;
+  grid-template-rows: repeat(3, max-content);
+  grid-row-gap: 4.8vw;
+}
+
+.form h3{
+  margin-top: 0px;
+  margin-bottom: 27px;
+  font-size: 30px;
+  line-height: 81%;
+}
+
+
+
+
+
+/*правый сектр*/
+
+.right-section{
+  height: 770px;
+  width: 100%;
+  margin-top: 2vw;
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+  justify-items: center;
+
+  grid-row-gap: 35px
+}
+
+
+
+
+
+/*поисковая строка*/
+
+.search{
+  max-width: 700px;
+  position: relative;
+}
+
+.search input{
+  max-width: 700px;
+width: 33vw;
+height: 50px;
+  font-size: 30px;
+  text-align:center;
+
+background-color: rgba(217, 217, 217, 0);
+border: 2px solid #000000;
+border-radius: 29px;
+}
+
+.search button{
+  position: absolute;
+  width: 40px;
+  top: 10px;
+  right: 12px;
+  background-color: rgba(217, 217, 217, 0);
+
+  border: none;
+}
+
+.page-navigation{
+  margin-top: 10px;
+  width: 100%;
+}
+.page-navigation ul{
+  display: grid;
+  grid-column-gap: 7px;
+  grid-template-columns: repeat(auto-fill, 50px);
+}
+.page-navigation li{
+  font-size: 32px;
+  background: #DDA30E;
+border-radius: 6px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 50px;
+  width: 50px;
+/*  display: grid;*/
+}
+section .current-page{
+  position: absolute;
+}
+section .current-page::before{
+  content: "";
+  position:absolute;
+  width: 50px;
+  top: 0px;
+  height: 50px;
+  background: #FFD872;
+  border-radius: 6px;
+}
+
+.page-navigation a{
+  color: black;
+}
+
+
+.page-navigation li:hover{
+  background-color: burlywood
+}

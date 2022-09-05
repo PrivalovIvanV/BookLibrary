@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" class="page">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/personal.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-body">
+
+<th:block th:insert="~{fragments/mainHeader :: (${isAuth} ? 'ForAuthPerson' : 'isNotAuthPerson')}"></th:block>
+
+
+<main class="conteiner main">
+    <h1>Личный кабинет</h1>
+    <section class="main-info">
+        <div class="avatarAndEdit">
+            <img th:src="@{/personAvatar}" width="250px" alt="">
+            <div class="person-button">
+                <img src="/img/personal-account/edit%201.png" alt="">
+                <a th:href="@{/account/edit}">Редактировать</a>
+
+            </div>
+        </div>
+
+        <div class="person-inf">
+            <p class="person-block">
+                <span class="base-filling">Имя</span>
+                <span></span>
+                <span class="person-filling" th:text="${AuthPerson.getFirst_name()}">Иван</span>
+            </p>
+            <p class="person-block">
+                <span class="base-filling">Фамилия</span>
+                <span></span>
+                <span class="person-filling" th:text="${AuthPerson.getLast_name()}">Привалов</span>
+            </p>
+            <p class="person-block">
+                <span class="base-filling">Дата рождения</span>
+                <span></span>
+                <span class="person-filling">06.10.2003</span>
+            </p>
+            <p class="person-block">
+                <span class="base-filling">Email</span>
+                <span></span>
+                <span class="person-filling" th:text="${AuthPerson.getEmail()}">ivan.privalov.89@mail.ru</span>
+            </p>
+        </div>
+        <form action="/logout" th:method="post" class="exit-button">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input type="submit" value="выход">
+        </form>
+    </section>
+
+</main>
+
+<th:block th:insert="~{fragments/footer :: main-footer}"></th:block>
+
+
+
+</body>
+</html>

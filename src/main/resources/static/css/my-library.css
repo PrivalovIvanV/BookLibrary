@@ -1,0 +1,32 @@
+.main{
+  width: 100%;
+  display: grid;
+  grid-template-rows: max-content 1fr;
+  min-height: 1300px;
+}
+
+h1{
+  font-size: 40px;
+  margin-left: 40px;
+}
+
+.main-content{
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-column-gap: 2.9vw;
+}
+
+.main-content h3{
+font-size: 30px;
+
+}
+
+.right-section ul{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 320px);
+grid-column-gap: 10px;
+
+  grid-template-rows: repeat(auto-fill, 150px);
+}
+

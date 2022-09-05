@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" class="page">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-body">
+
+<header class="main-header"  th:fragment="isNotAuthPerson">
+    <div class="conteiner setting-header">
+
+        <a th:href="@{/}">
+            <img src="/img/home/footer-logo.png" width="100px" alt="">
+        </a>
+
+        <nav>
+            <ul class="center-nav">
+                <li><a th:href="@{/}">Главная</a></li>
+                <li><a th:href="@{/catalog}">Каталог</a></li>
+                <li><a>Моя библиотека</a></li>
+            </ul>
+        </nav>
+        <a th:unless="${isAuth}" th:href="@{/auth/login}" class="init-home">Вход</a>
+    </div>
+
+</header>
+
+<main class="conteiner auth-background-book main">
+    <section class="login hidden">
+        <form name="f" method="post" th:action="@{/auth/registration}" th:object="${new_person}" class="main-registration">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div>
+                <h2>Регистрация</h2>
+            </div>
+            <ul>
+                <li>
+                    <input type="text" th:field="*{first_name}" placeholder="Имя">
+                    <div class="errors" style="color: red" th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}">username error</div>
+                </li>
+                <li>
+                    <input type="text" th:field="*{last_name}" placeholder="Фамилия">
+                    <div class="errors" style="color: red" th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}">username error</div>
+                </li>
+                <li>
+                    <input type="text" th:field="*{email}" placeholder="Email">
+                    <div class="errors" style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</div>
+                </li>
+                <li>
+                    <input type="password" th:field="*{password}" placeholder="Пароль">
+                    <div class="errors" style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">email error</div>
+                </li>
+
+            </ul>
+
+            <button class="button reg" type="submit">Зарегистрироваться</button>
+        </form>
+    </section>
+
+
+
+
+
+
+
+
+
+
+</main>
+
+<footer class="footer">
+    <div class="footer-navigation conteiner">
+        <img src="/img/home/footer-logo.png" width="90px" alt="">
+        <section>
+            <h6>Все разработано гением-бауманцем</h6>
+        </section>
+        <section>
+            <ul>
+                <li>
+                    <a href=""><img src="/img/home/email.png" width="27px" alt=""></a>
+                </li>
+                <li>
+                    <a href=""><img src="/img/home/telegram.png" width="27px" alt=""></a>
+                </li>
+                <li>
+                    <a href=""><img src="/img/home/vk.png" width="27px" alt=""></a>
+                </li>
+            </ul>
+        </section>
+    </div>
+</footer>
+
+
+</body>
+</html>

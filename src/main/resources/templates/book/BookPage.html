@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" class="page">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог</title>
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <link rel="stylesheet" th:href="@{/css/book.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body  class="page-body">
+<th:block th:insert="~{fragments/mainHeader :: (${isAuth} ? 'ForAuthPerson' : 'isNotAuthPerson')}"></th:block>
+
+
+
+
+<main class="conteiner main">
+    <a th:if="${isLibrary}" th:href="@{/myLibrary}" class="button-back">назад</a>
+    <a th:unless="${isLibrary}" th:href="@{/catalog}" class="button-back">назад</a>
+    <section class="main-info">
+        <div class="avatarAndEdit">
+            <img th:src="@{/BookAvatar/{id}(id = ${book.getId()})}" width="250px" alt="">
+            <th:block th:insert="~{fragments/bookPage :: (${book.isAccess()} ? 'bookIsAccess' : 'bookIsNotAccess')}"></th:block>
+
+        </div>
+
+        <div class="person-inf">
+            <p class="person-block">
+                <span class="title"  th:text="${book.title}">Код</span>
+            </p>
+            <p class="person-block">
+                <span class="author"  th:text="${book.author}">Привалов</span>
+            </p>
+            <p class="person-block-discription">
+                <span class="description">Тут будет фантасмагорическое описание, для вас)</span>
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+<th:block th:insert="~{fragments/footer :: main-footer}"></th:block>
+
+</body>
+</html>

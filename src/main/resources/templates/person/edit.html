@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" class="page">
+<head>
+  <meta charset="UTF-8">
+  <title>Каталог</title>
+  <link rel="stylesheet" th:href="@{/css/normalize.css}">
+  <link rel="stylesheet" th:href="@{/css/general.css}">
+  <link rel="stylesheet" th:href="@{/css/personal.css}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-body">
+<th:block th:insert="~{fragments/mainHeader :: (${isAuth} ? 'ForAuthPerson' : 'isNotAuthPerson')}"></th:block>
+
+<main class="conteiner main">
+  <h1>Edit mode</h1>
+  <section class="main-info">
+    <div class="avatarAndEdit">
+      <img th:src="@{/personAvatar}" width="250px" alt="">
+
+      <form class="input-ebat" action="">
+        <input form="forFile" type="file" id="file-input" name="file1">
+        <label for="file-input">Выбрать новое<br>фото</label>
+      </form>
+
+    </div>
+
+
+    <form id="forFile" name="f" method="post" th:action="@{/account/edit}" th:object="${currentUser}" enctype="multipart/form-data" class="person-inf form">
+      <div>
+        <p class="person-block">
+          <input type="text" th:field="*{first_name}" th:value="*{first_name}"  placeholder="Имя" id="fir_name">
+        <div style="color: red" th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}">username error</div>
+        </p>
+        <p class="person-block">
+          <input type="text" th:field="*{last_name}"  placeholder="Фамилия" th:value="*{last_name}"  id="las_name">
+        <div style="color: red" th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}">username error</div>
+        </p>
+        <p class="person-block">
+          <input type="text" th:field="*{email}" th:value="*{email}"placeholder="Email" readonly id="em">
+        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</div>
+        </p>
+        <p class="person-block">
+          <input type="text" th:field="*{password}" placeholder="Пароль" readonly id="ems">
+        </p>
+      </div>
+
+      <div class="person-button save">
+        <img src="/img/personal-account/edit21.png" alt="">
+        <button type="submit">Сохранить изменения</button>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<th:block th:insert="~{fragments/footer :: main-footer}"></th:block>
+
+
+
+</body>
+</html>

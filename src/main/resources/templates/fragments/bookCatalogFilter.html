@@ -1,0 +1,154 @@
+<section th:fragment="haveAFilter">
+  <h1>Каталог</h1>
+
+  <form th:action="@{/catalog}" class="form">
+
+    <div>
+      <h3>Жанр</h3>
+
+      <ul class="selecter">
+
+        <li th:unless="${bookFilter.isCS}">
+          <input class="hidden"  type="checkbox" id="ch11" name="CS">
+          <label for="ch11">Computer Scince</label>
+        </li>
+        <li th:if="${bookFilter.isCS}">
+          <input class="hidden" checked type="checkbox" id="ch1" name="CS">
+          <label for="ch1">Computer Scince</label>
+        </li>
+
+
+
+        <li th:unless="${bookFilter.isFICTION}">
+          <input class="hidden" type="checkbox" id="ch21" name="fan">
+          <label for="ch21">Фантастика</label>
+        </li>
+        <li th:if="${bookFilter.isFICTION}">
+          <input class="hidden" checked type="checkbox" id="ch2" name="fan">
+          <label for="ch2">Фантастика</label>
+        </li>
+
+
+
+        <li th:unless="${bookFilter.isHISTORY}">
+          <input class="hidden" type="checkbox" id="ch31" name="hist">
+          <label for="ch31">Исторические книги</label>
+        </li>
+        <li th:if="${bookFilter.isHISTORY}">
+          <input class="hidden" checked type="checkbox" id="ch3" name="hist">
+          <label for="ch3">Исторические книги</label>
+        </li>
+
+
+        <li th:unless="${bookFilter.isCOMICS}">
+          <input class="hidden" type="checkbox" id="ch41" name="comics">
+          <label for="ch41">Комиксы</label>
+        </li>
+        <li th:if="${bookFilter.isCOMICS}">
+          <input class="hidden" checked type="checkbox" id="ch4" name="comics">
+          <label for="ch4">Комиксы</label>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <div>
+      <h3>Фильтр</h3>
+
+      <ul class="selecter"  th:if="${bookFilter.isAll()}">
+        <li>
+          <input class="hidden-radio" type="radio" id="rd14" name="isAll" value="inStock">
+          <label for="rd14">Доступные</label>
+        </li>
+        <li>
+          <input class="hidden-radio" type="radio" id="rd24" name="isAll" value="allBook" checked>
+          <label for="rd24">Все книги</label>
+        </li>
+      </ul>
+      <ul class="selecter" th:unless="${bookFilter.isAll()}">
+        <li>
+          <input class="hidden-radio" type="radio" id="rd1" name="isAll" checked value="inStock">
+          <label for="rd1">Доступные</label>
+        </li>
+        <li>
+          <input class="hidden-radio" type="radio" id="rd2" name="isAll" value="allBook">
+          <label for="rd2">Все книги</label>
+        </li>
+      </ul>
+
+
+      <div class="main-button b1">
+        <img src="/img/catalog/search.png" alt="">
+        <input type="submit" value="Найти">
+      </div>
+
+    </div>
+
+
+  </form>
+</section>
+
+
+<section th:fragment="dontHaveAFilter">
+  <h1>Каталог</h1>
+
+  <form th:action="@{/catalog}" class="form">
+
+    <div>
+      <h3>Жанр</h3>
+
+      <ul class="selecter">
+
+        <li>
+          <input class="hidden"  type="checkbox" id="ch118" name="CS">
+          <label for="ch118">Computer Scince</label>
+        </li>
+
+
+
+        <li>
+          <input class="hidden" type="checkbox" id="ch218" name="fan">
+          <label for="ch218">Фантастика</label>
+        </li>
+
+
+
+        <li>
+          <input class="hidden" type="checkbox" id="ch318" name="hist">
+          <label for="ch318">Исторические книги</label>
+        </li>
+
+
+        <li>
+          <input class="hidden" type="checkbox" id="ch418" name="comics">
+          <label for="ch418">Комиксы</label>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <div>
+      <h3>Фильтр</h3>
+
+      <ul class="selecter">
+        <li>
+          <input class="hidden-radio" type="radio" id="rd18" name="isAll" value="inStock">
+          <label for="rd18">Доступные</label>
+        </li>
+        <li>
+          <input class="hidden-radio" type="radio" id="rd28" name="isAll" value="allBook" checked>
+          <label for="rd28">Все книги</label>
+        </li>
+      </ul>
+
+
+      <div class="main-button b1">
+        <img src="/img/catalog/search.png" alt="">
+        <input type="submit" value="Найти">
+      </div>
+
+    </div>
+  </form>
+</section>

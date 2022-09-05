@@ -1,0 +1,295 @@
+.auth-background-book {
+  background-image: url(../img/home/background-book.png);
+  width: 900px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center 10vh;
+  min-height: 1000px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+
+:root {
+  --header-text: #2D2D2D;
+  --header-and-footer: #E9EDB9;
+  --main-color: #FFF9DB;
+}
+
+@font-face {
+  font-family: 'Jura', sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+
+ul,
+a {
+  text-decoration: none;
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.conteiner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0px;
+}
+
+.page {
+  height: 100%;
+}
+
+.page-body {
+  font-family: "jura";
+  min-height: 100%;
+  font-weight: 700;
+
+  background-color: #CFC2B3;
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+
+
+}
+
+
+
+
+/*header*/
+.center-nav{
+  display: grid;
+  color: var(--header-text);
+  grid-template-columns: 155px 155px 250px;
+
+  align-content: center;
+  text-align: center;
+
+}
+.center-nav li a{
+  height: 70px;
+  font-size: 20px;
+  color: var(--header-text);
+  display: grid;
+  align-content: center;
+}
+.init-home{
+  color: var(--header-text);
+  display: grid;
+  align-content: center;
+  font-size: 25px;
+
+}
+
+
+.center-nav li a:hover{
+  background-color: #FFF9DB;
+  color: #975959;
+
+}
+.center-nav li:active{
+  text-decoration-line: underline;
+}
+.init-home:hover{
+  text-decoration-line: underline;
+}
+.init-home:active{
+  color: #975959;
+  text-decoration-line: underline;
+}
+
+
+
+
+
+
+
+
+.main-header {
+  font-size: 24px;
+  background-color: var(--header-and-footer);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.setting-header{
+  height: 70px;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: max-content 1fr max-content;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*footer*/
+.footer {
+  background: #C4BCA2;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.footer-navigation {
+  height: 70px;
+  display: grid;
+  grid-template-columns: max-content auto max-content;
+  justify-items: center;
+  align-items: center;
+}
+
+.footer-navigation ul {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  grid-column-gap: 6px;
+  margin-right: 15px;
+}
+
+.footer-navigation > img {
+  margin-left: 15px;
+}
+
+
+
+.errors{
+  font-size: 20px
+}
+
+
+
+/*дополнительное окно*/
+
+.login {
+  position: fixed;
+  top: 90px;
+  left: 30%;
+}
+
+.main-login {
+  border-radius: 36px;
+  position: fixed;
+  justify-self: center;
+  align-self: center;
+
+  width: 600px;
+  height: max-content;
+  background-color: white;
+  display: grid;
+  grid-template-rows: max-content auto max-content;
+  justify-items: center;
+
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 81%;
+}
+
+.main-login img {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+
+}
+
+.main-login ul li input {
+  margin-top: 10px;
+  width: 390px;
+  height: 68px;
+  border: 3px solid #000000;
+  font-weight: 700;
+
+}
+
+.main-login ul > a {
+  font-size: 20px;
+  color: black;
+  margin-left: 265px;
+}
+
+.button {
+  min-width: 209px;
+  height: 61px;
+  margin-bottom: 40px;
+  margin-top: 10px;
+
+  background: #FFFFFF;
+  border: 3px solid #000000;
+  font-size: 32px;
+  font-weight: 700;
+}
+.reg:hover,
+reg:active{
+  background-color: black;
+  color: white;
+}
+.reg-button:hover,
+reg-button:active{
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+.main-registration {
+  border-radius: 32px;
+  position: fixed;
+  justify-self: center;
+  align-self: center;
+
+  width: 600px;
+  height: max-content;
+  background-color: white;
+  display: grid;
+  grid-template-rows: max-content auto max-content;
+  justify-items: center;
+
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 81%;
+}
+
+.main-registration img {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+
+}
+
+.main-registration ul li input {
+  margin-top: 10px;
+  width: 390px;
+  height: 68px;
+  border: 3px solid #000000;
+  font-weight: 700;
+
+}
+
+.main-registration ul > a {
+  font-size: 20px;
+  color: black;
+  margin-left: 265px;
+}
+
+

@@ -1,0 +1,29 @@
+<header  class="header" th:fragment="ForAuthPerson">
+    <nav class="main-navigation conteiner">
+        <ul class="center-nav">
+            <li><a th:href="@{/}">Главная</a></li>
+            <li><a th:href="@{/catalog}">Каталог</a></li>
+            <li><a th:href="@{/myLibrary}">Моя библиотека</a></li>
+        </ul>
+
+        <div  class="avatar">
+            <img th:src="@{/personAvatar}" height="42px" width="42px"/>
+            <a th:href="@{/account}"
+               th:text="${AuthPerson.getFirst_name()}">Добро пожаловать...</a>
+        </div>
+
+    </nav>
+</header>
+
+
+<header  class="header" th:fragment="isNotAuthPerson">
+    <nav class="main-navigation conteiner">
+        <ul  class="center-nav">
+            <li><a th:href="@{/}">Главная</a></li>
+            <li><a th:href="@{/catalog}">Каталог</a></li>
+            <li><a th:href="@{/myLibrary}">Моя библиотека</a></li>
+        </ul>
+        <a th:unless="${isAuth}" th:href="@{/auth/login}" class="init-home">Вход</a>
+
+    </nav>
+</header>

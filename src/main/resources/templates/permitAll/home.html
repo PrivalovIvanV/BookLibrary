@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" class="page" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <link rel="stylesheet" th:href="@{/css/normalize.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/general.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/personal.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/home.css}" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-body">
+
+<th:block th:insert="~{fragments/header :: (${isAuth} ? 'ForAuthPerson' : 'isNotAuthPerson')}"></th:block>
+
+<main class="main conteiner background-book">
+    <section class="main-main">
+        <img src="/img/home/Main-logo.png" width="180px" alt="">
+        <div>
+            <ul class="benefit">
+                <li>
+                    <img src="/img/home/book1.png" width="60px">
+                    <h2>Доступность</h2>
+                    <h3>Сотни книг<br>и все для вас</h3>
+                </li>
+                <li>
+                    <img src="/img/home/book2.png"  width="60px" alt="">
+                    <h2>Простота</h2>
+                    <h3>Взять книгу проще,<br>чем выучить Java</h3>
+                </li>
+                <li>
+                    <img src="/img/home/book3.png"  width="60px" alt="">
+                    <h2>Безопасность</h2>
+                    <h3>Ваши данные<br>зашифрованы</h3>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="buf-info">
+        <h2>Стало проще...</h2>
+        <h4>Теперь не нужно иметь крточку читателя,<br>
+            чтобы иметь у себя на полке класику мировой литературы
+            <br><br>
+            Мы позаботились о вашем удобстве и теперь взять
+            приглянувшуюся вам книжку можно прямо из дома,<br>
+            а наши сотрудники доствят ее вам в любое удобное<br>
+            для вас время!</h4>
+        <div class="last-section">
+            <img src="/img/home/spell-book.png" width="60px" alt="">
+            <h5>С уважением,<br>
+                ваша команда<br>
+                разработчиков.</h5>
+        </div>
+    </section>
+</main>
+
+<th:block th:insert="~{fragments/footer :: main-footer}"></th:block>
+
+</body>
+</html>

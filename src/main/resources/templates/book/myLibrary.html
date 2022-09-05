@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="page">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог</title>
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <link rel="stylesheet" th:href="@{/css/general.css}">
+    <link rel="stylesheet" th:href="@{/css/my-library.css}">
+    <!--  <link rel="stylesheet" href="/css/catalog.css">-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jura:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="page-body">
+
+<th:block th:insert="~{fragments/mainHeader :: (${isAuth} ? 'ForAuthPerson' : 'isNotAuthPerson')}"></th:block>
+
+
+<main class="conteiner background-book main">
+    <h1>Моя библиотека</h1>
+    <div class="main-content">
+        <section>
+
+            <form action="" class="form">
+
+                <div>
+                    <h3>Фильтр</h3>
+
+                    <ul class="selecter">
+                        <li>
+                            <input class="hidden-radio" type="radio" id="rd1" name="a1">
+                            <label for="rd1">Просроченные</label>
+                        </li>
+                        <li>
+                            <input class="hidden-radio" type="radio" id="rd2" name="a1" checked>
+                            <label for="rd2">Все книги</label>
+                        </li>
+                    </ul>
+
+
+                    <div class="main-button b1">
+                        <img src="/img/catalog/search.png" alt="">
+                        <input type="submit" value="Найти">
+                    </div>
+
+                </div>
+
+
+            </form>
+        </section>
+
+
+        <section class="right-section">
+
+            <ul th:unless="${bookList.isEmpty()}">
+
+                <li th:each="book_item : ${bookList}" th:object="${book_item}">
+                    <a th:href="@{/catalog/{id}?isCatalog=da(id = *{id})}">
+                        <div class="book-item">
+
+                            <img th:src="@{/BookAvatar/{id}(id = *{id})}"  width="90px" alt="">
+                            <div>
+                                <div>
+                                    <div class="author" th:text="*{title}">Computer science</div>
+                                    <div class="title" th:text="*{author}">Джек Лондон</div>
+                                </div>
+                                <span th:if="*{isOverdue}" style="color: red" th:text="${'Вы просрочили книгу на ' + book_item.intervalDate() + ' суток'}" class="status red">Просрочена на 2 дня</span>
+                                <span  th:unless="*{isOverdue}" style="color: green" th:text="*{'Возврат: ' + dateOfReturn()}" class="status red">Просрочена на 2 дня</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+
+
+            </ul>
+
+            <ul th:if="${bookList.isEmpty()}">
+                <li>
+                    Ваша библетотека пуста, поэтому самое время выбрать что-то для себя в каталоге.
+                </li>
+            </ul>
+        </section>
+    </div>
+
+</main>
+
+<th:block th:insert="~{fragments/footer :: main-footer}"></th:block>
+
+
+</body>
+</html>
