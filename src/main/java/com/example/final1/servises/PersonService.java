@@ -50,7 +50,6 @@ public class PersonService implements UserDetailsService {
     }    //получение текущего пользователя
     public boolean userHaveAvatar(){
         PersonImage image = imageService.getImageByPersonId(getCurrentUserID());
-        System.out.println(image);
         if (image != null) return true;
         return false;
     }

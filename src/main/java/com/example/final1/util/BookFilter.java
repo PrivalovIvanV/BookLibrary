@@ -26,7 +26,7 @@ public class BookFilter {
             this.HISTORY = HISTORY;
             this.COMICS = COMICS;
             haveAFilter = true;
-            if (isAll.equals("allBook")){    //TODO
+            if (isAll.equals("allBook")){
                 if (CS == false && FICTION == false && HISTORY == false && COMICS == false) haveAFilter = false;
                 this.isAll = true;
             } else {
@@ -36,13 +36,18 @@ public class BookFilter {
         }
     };
 
-    public void clear(){
-        haveAFilter = false;
-        isAll = true;
-    }
+//    public void clear(){
+//        haveAFilter = false;
+//        isAll = true;
+//    }
 
     public List<String> getFilterList(){
+
         List<String> filterList = new ArrayList<>();
+
+        if (!isHaveAFilter()){
+            return filterList;
+        }
 
         if (CS) filterList.add("CS");
         if (FICTION) filterList.add("FICTION");
@@ -52,7 +57,7 @@ public class BookFilter {
         return filterList;
     }
 
-    public void setHaveAFilter(boolean haveAFilter) {
-        this.haveAFilter = haveAFilter;
-    }
+//    public void setHaveAFilter(boolean haveAFilter) {
+//        this.haveAFilter = haveAFilter;
+//    }
 }

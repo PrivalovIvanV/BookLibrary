@@ -67,7 +67,6 @@ public class Book {
 
 
     public Date dateOfReturn(){
-        System.out.println(taken_data);
         if (taken_data == null) return null;
         Date date = new Date(taken_data.getTime() + 60000*60*24*15);
         return date;

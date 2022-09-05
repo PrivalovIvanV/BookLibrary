@@ -102,7 +102,7 @@ public class CatalogController {
         }
 
 
-        model.addAttribute("lastSearch", lastSearch);
+        model.addAttribute("searchVal", lastSearch);
         model.addAttribute("book", bookService.findById(id).get());
         return "redirect:/catalog/" + id;
     }
@@ -121,7 +121,6 @@ public class CatalogController {
         for (int i = 0; i < numOfPage; i++){
             list.add(i);
         }
-        System.out.println("количество нужных страниц: " + numOfPage);
         return list;
     }//нужно, чтобы можно было по страничкам ходить
 

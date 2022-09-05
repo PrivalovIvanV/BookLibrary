@@ -52,7 +52,7 @@ public class BookService {
             //List<Book> finalList = new ArrayList<>();
             if (page == ( countOfPage - 1)) {
                 return unSortedList.subList(page * 15, size);
-            }else return unSortedList.subList(page*15, ( page + 1 ) * 15 - 1);
+            }else return unSortedList.subList(page*15, ( page + 1 ) * 15);
 
         }else
 
@@ -96,7 +96,7 @@ public class BookService {
         List<Book> finalList = new ArrayList<>();
         List<Book> untreatedList = bookRepo.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(q, q);
         List<String> filterList = bookFilter.getFilterList();
-        log.warn("Количество книг до сортировки: {}", untreatedList.size());
+        log.info("Количество книг до сортировки: {}", untreatedList.size());
         if (filterList.size() != 0) {
             for (String filter : filterList) {
                 for (Book book : untreatedList){
@@ -106,12 +106,12 @@ public class BookService {
 
             }
         } else finalList = untreatedList;
-        log.warn("Количество книг после первого цикла сортировки: {}", finalList.size());
+//        log.warn("Количество книг после первого цикла сортировки: {}", finalList.size());
 
         if (!bookFilter.isAll()){
             finalList = finalList.stream().filter(book -> book.isAccess()).collect(Collectors.toList());
         }
-        log.warn("Количество книг после второго цикла сортировки: {}, isAll = {}", finalList.size(), bookFilter.isAll());
+        log.info("Количество книг после второго цикла сортировки: {}, isAll = {}", finalList.size(), bookFilter.isAll());
         /////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////На этом моменте мы закончили с сортировкой всех книг по нужным нам фильтрам///////////////
         /////////////////////////////////////////////////////////////////////////////////////////////////////
