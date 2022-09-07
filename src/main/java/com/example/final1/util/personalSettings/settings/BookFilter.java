@@ -1,4 +1,4 @@
-package com.example.final1.util;
+package com.example.final1.util.personalSettings.settings;
 
 
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Component
-public class BookFilter {
+public class BookFilter implements Settings{
 
     private boolean haveAFilter = false;
 

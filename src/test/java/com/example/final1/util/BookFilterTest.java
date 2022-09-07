@@ -1,5 +1,6 @@
 package com.example.final1.util;
 
+import com.example.final1.util.personalSettings.settings.BookFilter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

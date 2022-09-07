@@ -4,7 +4,9 @@ import com.example.final1.models.Book;
 import com.example.final1.models.Person;
 import com.example.final1.servises.BookService;
 import com.example.final1.servises.PersonService;
-import com.example.final1.util.BookFilter;
+import com.example.final1.servises.SettingsService;
+import com.example.final1.util.personalSettings.settings.BookFilter;
+import com.example.final1.util.personalSettings.settings.PageStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -21,8 +23,8 @@ import java.util.List;
 public class CatalogController {
 
     private final BookService bookService;
-    private final BookFilter bookFilter;
     private final PersonService personSer;
+    private final SettingsService settingsService;
 
 
 
@@ -44,7 +46,7 @@ public class CatalogController {
 
         model.addAttribute("isLibrary", isLibrary);
         model.addAttribute("isBookOwnedByCurrentUser", response);
-        model.addAttribute("lastSearch", lastSearch);
+        model.addAttribute("lastSearch", lastSearch());
         model.addAttribute("book", bookResp);
         return "book/BookPage";
     }
@@ -52,8 +54,8 @@ public class CatalogController {
 
 
     @GetMapping
-    public String catalog(@RequestParam(name = "q", required = false) String qr,
-                          @RequestParam(name = "page", required = false) Integer req,
+    public String catalog(@RequestParam(name = "q", required = false) String query,
+                          @RequestParam(name = "page", required = false) Integer page,
                           @RequestParam(name = "CS", required = false) boolean CS,
                           @RequestParam(name = "fan", required = false) boolean FICTION,
                           @RequestParam(name = "hist", required = false) boolean HISTORY,
@@ -61,28 +63,22 @@ public class CatalogController {
                           @RequestParam(name = "isAll", required = false) String isAll,
                           Model model){
 
-        bookFilter.updateFilter(CS, FICTION, HISTORY, COMICS, isAll);
-        // Этот блок создан, чтобы при запросе без параметров
-        // система отработала бы хорошо
-        if (req != null) lastPage = req.intValue();
-        if (qr != null) lastSearch = qr;
-        if (qr != null && req == null) lastPage = 0;     //Если у нас новый поисковой запрос, то lastPage сбрасывается
-//        if (qr != null && isAll == null && req == null) bookFilter.clear();  //Если у нас новый поисковой запрос, то фильтры сбрасывается
-        if (qr != null && isAll != null) lastSearch = "";
-        if (qr == null && req == null && isAll != null) lastPage=0;
 
+
+        BookFilter bookFilter = settingsService.addCatalogFilter(page, query, isAll, CS, HISTORY, COMICS, FICTION);
 
         List<Integer> pageIterator;
-        List<Book> listBook = bookService.findAll(lastSearch, lastPage);
+        List<Book> listBook = bookService.findAll(lastSearch(), lastPage());
+
         if (bookFilter.isHaveAFilter()){
-            pageIterator = PageIterator(bookService.findAllWithFilter(lastSearch));
+            pageIterator = PageIterator(bookService.findAllWithFilter(lastSearch()));
         }else
-            pageIterator = PageIterator(bookService.findAll(lastSearch));
+            pageIterator = PageIterator(bookService.findAll(lastSearch()));
 
 
         model.addAttribute("bookFilter", bookFilter);
-        model.addAttribute("currentPage", lastPage);
-        model.addAttribute("searchVal", lastSearch);
+        model.addAttribute("currentPage", lastPage());
+        model.addAttribute("searchVal", lastSearch());
         model.addAttribute("bookList", listBook);
         model.addAttribute("PageIterator", pageIterator);
         return "book/BookCatalog";
@@ -102,7 +98,7 @@ public class CatalogController {
         }
 
 
-        model.addAttribute("searchVal", lastSearch);
+        model.addAttribute("searchVal", lastSearch());
         model.addAttribute("book", bookService.findById(id).get());
         return "redirect:/catalog/" + id;
     }
@@ -124,8 +120,6 @@ public class CatalogController {
         return list;
     }//нужно, чтобы можно было по страничкам ходить
 
-    private String lastSearch = "";
-    private int lastPage = 0;
 
 
     @ModelAttribute(name = "isAuth")
@@ -134,7 +128,20 @@ public class CatalogController {
     @ModelAttribute(name = "AuthPerson")
     public Person getAuthPerson(){ return personSer.getCurrentUser();}
 
-
+    private int lastPage(){
+        try {
+            return ((PageStatus) settingsService.get("PageStatus")).getLastPage();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    private String lastSearch(){
+        try {
+            return ((PageStatus) settingsService.get("PageStatus")).getLastSearch();
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
 
 }

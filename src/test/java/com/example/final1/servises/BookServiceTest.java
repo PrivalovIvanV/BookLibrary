@@ -2,7 +2,7 @@ package com.example.final1.servises;
 
 import com.example.final1.models.Book;
 import com.example.final1.repositories.BookRepo;
-import com.example.final1.util.BookFilter;
+import com.example.final1.util.personalSettings.settings.BookFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,14 +12,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import static org.junit.Assert.*;
 
 @Slf4j
 @SpringBootTest

@@ -6,8 +6,9 @@ package com.example.final1.servises;
 import com.example.final1.models.Book;
 import com.example.final1.models.Person;
 import com.example.final1.repositories.BookRepo;
-import com.example.final1.util.BookFilter;
+import com.example.final1.util.personalSettings.settings.BookFilter;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -28,14 +29,16 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private final JdbcTemplate jdbcTemplate;
-    private final BookFilter bookFilter;
+    private final SettingsService settingsService;
     private final BookRepo bookRepo;
     private final PersonService personService;
 
     public List<Book> findAll(){ return bookRepo.findAll();}
     public List<Book> findAll(String q){ return bookRepo.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(q, q);}
+    @SneakyThrows
     public List<Book> findAll(String q, int page){
 
+        BookFilter bookFilter = (BookFilter) settingsService.get("bookFilter");
         if (bookFilter.isHaveAFilter()){
             List<Book> unSortedList = findAllWithFilter(q);
 
@@ -92,8 +95,10 @@ public class BookService {
 
 
 
+    @SneakyThrows
     public List<Book> findAllWithFilter(String q){
         List<Book> finalList = new ArrayList<>();
+        BookFilter bookFilter = (BookFilter) settingsService.get("bookFilter");
         List<Book> untreatedList = bookRepo.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(q, q);
         List<String> filterList = bookFilter.getFilterList();
         log.info("Количество книг до сортировки: {}", untreatedList.size());
