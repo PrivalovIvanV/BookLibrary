@@ -26,12 +26,7 @@ public class PersonalSettings {
     }
 
     public Map<String, Settings> get(){return listSettings;}
-//    public Settings get(String name) throws Exception{
-//        if (listSettings.containsKey(name.toLowerCase())){
-//            return listSettings.get(name.toLowerCase());
-//        }
-//        else throw new Exception(); //todo доделать исключение
-//    }
+
 
     public void pull(Settings settings){
         String key = parseClassName(settings);

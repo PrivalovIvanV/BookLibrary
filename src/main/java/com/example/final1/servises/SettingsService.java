@@ -59,7 +59,7 @@ public class SettingsService {
         PersonalSettings listSettings = cashedSettings.get(getKeyCurrentUser());
 
             try {//это мы попробовали добавить BookFilter
-                bookFilter = (BookFilter) get("BookFilter");
+                bookFilter = (BookFilter) this.get("BookFilter");
                 bookFilter.updateFilter(CS, FICTION, HISTORY, COMICS, isAll);
             } catch (Exception e) {
                 bookFilter = new BookFilter();
@@ -87,6 +87,7 @@ public class SettingsService {
 
     public Settings get(String name) throws Exception{
         Map<String, Settings> map = cashedSettings.get(getKeyCurrentUser()).get();
+        log.warn("Уникальный идентификатор равен {}", getKeyCurrentUser());
         if (map.containsKey(name.toLowerCase())) return map.get(name.toLowerCase());
         throw new Exception();//todo доделать исключение
     }

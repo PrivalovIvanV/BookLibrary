@@ -62,19 +62,13 @@ public class CatalogController {
                           @RequestParam(name = "comics", required = false) boolean COMICS,
                           @RequestParam(name = "isAll", required = false) String isAll,
                           Model model){
-
-
-
-        BookFilter bookFilter = settingsService.addCatalogFilter(page, query, isAll, CS, HISTORY, COMICS, FICTION);
-
         List<Integer> pageIterator;
-        List<Book> listBook = bookService.findAll(lastSearch(), lastPage());
+        BookFilter bookFilter;
+        List<Book> listBook;
 
-        if (bookFilter.isHaveAFilter()){
-            pageIterator = PageIterator(bookService.findAllWithFilter(lastSearch()));
-        }else
-            pageIterator = PageIterator(bookService.findAll(lastSearch()));
-
+        bookFilter = settingsService.addCatalogFilter(page, query, isAll, CS, HISTORY, COMICS, FICTION);
+        listBook = bookService.findAll(lastSearch(), lastPage());
+        pageIterator = PageIterator(bookFilter);
 
         model.addAttribute("bookFilter", bookFilter);
         model.addAttribute("currentPage", lastPage());
@@ -109,11 +103,21 @@ public class CatalogController {
 
 
 
-    public List<Integer> PageIterator(List<Book> a){
+
+    public List<Integer> PageIterator(BookFilter bookFilter){
         List<Integer> list = new ArrayList<>();
-        log.warn("Длинна листа с книгами составила {}", a.size());
-        int numOfPage = a.size()/15;
-        if (a.size()%15 != 0) numOfPage++;
+        int numOfPage;
+
+        if (bookFilter.isHaveAFilter()){
+            int listSize = bookService.findAllWithFilter(lastSearch()).size();
+            numOfPage = listSize/15;
+            if (listSize%15 != 0) numOfPage++;
+        }else{
+            int listSize = bookService.findAll(lastSearch()).size();
+            numOfPage = listSize/15;
+            if (listSize%15 != 0) numOfPage++;
+        }
+
         for (int i = 0; i < numOfPage; i++){
             list.add(i);
         }
