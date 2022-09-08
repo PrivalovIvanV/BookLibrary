@@ -62,11 +62,12 @@ public class CatalogController {
                           @RequestParam(name = "comics", required = false) boolean COMICS,
                           @RequestParam(name = "isAll", required = false) String isAll,
                           Model model){
+
         List<Integer> pageIterator;
         BookFilter bookFilter;
         List<Book> listBook;
 
-        bookFilter = settingsService.addCatalogFilter(page, query, isAll, CS, HISTORY, COMICS, FICTION);
+        bookFilter = settingsService.addCatalogFilter(page, query, isAll, CS, FICTION, HISTORY, COMICS);
         listBook = bookService.findAll(lastSearch(), lastPage());
         pageIterator = PageIterator(bookFilter);
 
