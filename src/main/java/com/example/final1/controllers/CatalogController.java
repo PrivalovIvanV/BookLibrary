@@ -1,12 +1,11 @@
 package com.example.final1.controllers;
 
-import com.example.final1.models.Book;
-import com.example.final1.models.Person;
-import com.example.final1.servises.BookService;
-import com.example.final1.servises.PersonService;
-import com.example.final1.servises.SettingsService;
-import com.example.final1.util.personalSettings.settings.BookFilter;
-import com.example.final1.util.personalSettings.settings.PageStatus;
+import com.example.final1.servises.bookService.impl.entity.Book;
+import com.example.final1.servises.personService.impl.entity.Person;
+import com.example.final1.servises.bookService.impl.BookServiceImpl;
+import com.example.final1.servises.personService.impl.PersonService;
+import com.example.final1.servises.settingsService.api.SettingsService;
+import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CatalogController {
 
-    private final BookService bookService;
+    private final BookServiceImpl bookService;
     private final PersonService personSer;
     private final SettingsService settingsService;
 
@@ -33,19 +32,16 @@ public class CatalogController {
                            @RequestParam( name = "isCatalog", required = false) String isCatalog,
                            Model model){
 
-        boolean isLibrary;
-        boolean response;
-        Book bookResp =  bookService.findById(id).get();
+        boolean isLibrary = true;
+        boolean isBookOwnedByCurrentUser = false;
+        Book bookResp =  bookService.findById(id);
 
-        if (isPersonAuth()) {
-            response = personSer.getCurrentUser().isOwnerThisBook(id);
-        }else response = false;
-        if (isCatalog == null) {
-            isLibrary = false;
-        } else isLibrary = true;
+        if (isPersonAuth()) isBookOwnedByCurrentUser = personSer.getCurrentUser().isOwnerThisBook(id);
+        if (isCatalog == null) isLibrary = false;
+
 
         model.addAttribute("isLibrary", isLibrary);
-        model.addAttribute("isBookOwnedByCurrentUser", response);
+        model.addAttribute("isBookOwnedByCurrentUser", isBookOwnedByCurrentUser);
         model.addAttribute("lastSearch", lastSearch());
         model.addAttribute("book", bookResp);
         return "book/BookPage";
@@ -63,19 +59,21 @@ public class CatalogController {
                           @RequestParam(name = "isAll", required = false) String isAll,
                           Model model){
 
-        List<Integer> pageIterator;
-        BookFilter bookFilter;
-        List<Book> listBook;
+        CatalogSettings settings =
+                new CatalogSettings(page, query, isAll, CS, FICTION, HISTORY, COMICS);
+        settingsService.addSettings(settings);
 
-        bookFilter = settingsService.addCatalogFilter(page, query, isAll, CS, FICTION, HISTORY, COMICS);
-        listBook = bookService.findAll(lastSearch(), lastPage());
-        pageIterator = PageIterator(bookFilter);
+        List<Book> unsortedList = bookService.findAll();
+        List<List<Book>> listForPage = allocateListToPage(unsortedList);
+        CatalogSettings catalogSettings =
+                (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
 
-        model.addAttribute("bookFilter", bookFilter);
+        log.info("Из {} книг, получилось {} страниц", unsortedList.size(), listForPage.size());
+        model.addAttribute("bookFilter", catalogSettings);
         model.addAttribute("currentPage", lastPage());
         model.addAttribute("searchVal", lastSearch());
-        model.addAttribute("bookList", listBook);
-        model.addAttribute("PageIterator", pageIterator);
+        model.addAttribute("bookList", listForPage.get(lastPage()));
+        model.addAttribute("PageIterator", PageIterator(listForPage.size()));
         return "book/BookCatalog";
     }
 
@@ -89,12 +87,12 @@ public class CatalogController {
     public String addBookOwner(@PathVariable("id") int id, Model model){
         if (personSer.isAuth()) {
             log.warn("Попытка добавить книгу");
-            bookService.addBookOwner(id, personSer.getCurrentUser().getId());
+            bookService.addOwnerForBook(id, personSer.getCurrentUser().getId());
         }
 
 
         model.addAttribute("searchVal", lastSearch());
-        model.addAttribute("book", bookService.findById(id).get());
+        model.addAttribute("book", bookService.findById(id));
         return "redirect:/catalog/" + id;
     }
 
@@ -102,24 +100,32 @@ public class CatalogController {
 
 
 
+    private List<List<Book>> allocateListToPage(List<Book> unsortedList){
+
+        int size = unsortedList.size();
+        int countOfPage = size/15;
+        if (size%15 != 0) countOfPage++;
+//        log.warn("Мы вычислили что из массива в {} элементов можно сделать {} страниц", size, countOfPage);
+
+        //////Мы приготовили все и нам осталось только раскидать большое количество книг по 15 штук на страничку
 
 
+        List<List<Book>> listWithPage = new ArrayList<>();
+        for(int i = 0; i < countOfPage; i++){
+            if (i == ( countOfPage - 1)) {
+                listWithPage.add( unsortedList.subList(i * 15, size) );
+            } else {
+                listWithPage.add( unsortedList.subList(i * 15, (i + 1) * 15) );
+            }
 
-    public List<Integer> PageIterator(BookFilter bookFilter){
-        List<Integer> list = new ArrayList<>();
-        int numOfPage;
-
-        if (bookFilter.isHaveAFilter()){
-            int listSize = bookService.findAllWithFilter(lastSearch()).size();
-            numOfPage = listSize/15;
-            if (listSize%15 != 0) numOfPage++;
-        }else{
-            int listSize = bookService.findAll(lastSearch()).size();
-            numOfPage = listSize/15;
-            if (listSize%15 != 0) numOfPage++;
         }
+        return listWithPage;
+    }
 
-        for (int i = 0; i < numOfPage; i++){
+
+    public List<Integer> PageIterator(int size){
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < size; i++){
             list.add(i);
         }
         return list;
@@ -128,24 +134,25 @@ public class CatalogController {
 
 
     @ModelAttribute(name = "isAuth")
-    public boolean isPersonAuth(){ return personSer.isAuth();}
+    public boolean isPersonAuth(){
+        return personSer.isAuth();
+    }
 
     @ModelAttribute(name = "AuthPerson")
-    public Person getAuthPerson(){ return personSer.getCurrentUser();}
+    public Person getAuthPerson(){
+        return personSer.getCurrentUser();
+    }
 
     private int lastPage(){
-        try {
-            return ((PageStatus) settingsService.get("PageStatus")).getLastPage();
-        } catch (Exception e) {
-            return 0;
-        }
+        CatalogSettings catalogSettings =
+                (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
+        return catalogSettings.getLastPage();
     }
+
     private String lastSearch(){
-        try {
-            return ((PageStatus) settingsService.get("PageStatus")).getLastSearch();
-        } catch (Exception e) {
-            return "";
-        }
+        CatalogSettings catalogSettings =
+                (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
+        return catalogSettings.getLastSearch();
     }
 
 

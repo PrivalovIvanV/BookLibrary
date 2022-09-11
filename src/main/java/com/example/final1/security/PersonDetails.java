@@ -1,6 +1,6 @@
 package com.example.final1.security;
 
-import com.example.final1.models.Person;
+import com.example.final1.servises.personService.impl.entity.Person;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

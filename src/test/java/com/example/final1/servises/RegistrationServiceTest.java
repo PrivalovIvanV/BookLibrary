@@ -1,7 +1,8 @@
 package com.example.final1.servises;
 
-import com.example.final1.models.Person;
-import com.example.final1.repositories.PersonRepo;
+import com.example.final1.security.RegistrationService;
+import com.example.final1.servises.personService.impl.entity.Person;
+import com.example.final1.servises.personService.impl.repo.PersonRepo;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
