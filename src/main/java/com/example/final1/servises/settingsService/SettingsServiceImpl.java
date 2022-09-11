@@ -36,11 +36,20 @@ public class SettingsServiceImpl implements SettingsService {
         Map<String, Settings> listSettings =
                 cash.get(keyCurrentUser()).getListSettings();
 
-        if (listSettings.containsKey(nameSettings.toLowerCase())) {
+        if (isSettingsPresent(nameSettings)) {
             return listSettings.get(nameSettings.toLowerCase());
-        } else
+        } else {
             log.warn("У пользователя с id {}, не оказалось настройки с именем {}", keyCurrentUser(), nameSettings);
-        throw new FilterNotFoundException(nameSettings);
+            throw new FilterNotFoundException(nameSettings);
+        }
+    }
+
+    public boolean isSettingsPresent(String nameSettings){
+        Map<String, Settings> listSettings =
+                getSettingsForCurrentUser().getListSettings();
+        if (listSettings.containsKey(nameSettings.toLowerCase())) return true;
+
+        return false;
     }
 
 

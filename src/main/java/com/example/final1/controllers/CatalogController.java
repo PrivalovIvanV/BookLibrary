@@ -31,10 +31,10 @@ public class CatalogController {
     public String bookPage(@PathVariable("id") int id,
                            @RequestParam( name = "isCatalog", required = false) String isCatalog,
                            Model model){
-
+    log.info("lastPage равен {}", lastPage());
         boolean isLibrary = true;
         boolean isBookOwnedByCurrentUser = false;
-        Book bookResp =  bookService.findById(id);
+        Book book =  bookService.findById(id);
 
         if (isPersonAuth()) isBookOwnedByCurrentUser = personSer.getCurrentUser().isOwnerThisBook(id);
         if (isCatalog == null) isLibrary = false;
@@ -43,7 +43,7 @@ public class CatalogController {
         model.addAttribute("isLibrary", isLibrary);
         model.addAttribute("isBookOwnedByCurrentUser", isBookOwnedByCurrentUser);
         model.addAttribute("lastSearch", lastSearch());
-        model.addAttribute("book", bookResp);
+        model.addAttribute("book", book);
         return "book/BookPage";
     }
 
@@ -63,16 +63,21 @@ public class CatalogController {
                 new CatalogSettings(page, query, isAll, CS, FICTION, HISTORY, COMICS);
         settingsService.addSettings(settings);
 
-        List<Book> unsortedList = bookService.findAll();
-        List<List<Book>> listForPage = allocateListToPage(unsortedList);
         CatalogSettings catalogSettings =
                 (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
+        List<Book> unsortedListWithBook = bookService.findAll();
+        List<List<Book>> listForPage = allocateListToPage(unsortedListWithBook);
 
-        log.info("Из {} книг, получилось {} страниц", unsortedList.size(), listForPage.size());
+        //пробуем отправить лист с книгами
+        try{
+            model.addAttribute("bookList", listForPage.get(lastPage()));
+        } catch (IndexOutOfBoundsException e){
+            model.addAttribute("bookList", new ArrayList<>());
+
+        }
         model.addAttribute("bookFilter", catalogSettings);
         model.addAttribute("currentPage", lastPage());
         model.addAttribute("searchVal", lastSearch());
-        model.addAttribute("bookList", listForPage.get(lastPage()));
         model.addAttribute("PageIterator", PageIterator(listForPage.size()));
         return "book/BookCatalog";
     }
@@ -105,10 +110,6 @@ public class CatalogController {
         int size = unsortedList.size();
         int countOfPage = size/15;
         if (size%15 != 0) countOfPage++;
-//        log.warn("Мы вычислили что из массива в {} элементов можно сделать {} страниц", size, countOfPage);
-
-        //////Мы приготовили все и нам осталось только раскидать большое количество книг по 15 штук на страничку
-
 
         List<List<Book>> listWithPage = new ArrayList<>();
         for(int i = 0; i < countOfPage; i++){
@@ -144,15 +145,20 @@ public class CatalogController {
     }
 
     private int lastPage(){
-        CatalogSettings catalogSettings =
-                (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
-        return catalogSettings.getLastPage();
+        if (settingsService.isSettingsPresent("CatalogSettings")){
+            CatalogSettings catalogSettings =
+                    (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
+            log.info("Последняя страница, где был пользователь {}", catalogSettings.getLastPage());
+            return catalogSettings.getLastPage();
+        } else return 0;
     }
 
     private String lastSearch(){
-        CatalogSettings catalogSettings =
-                (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
-        return catalogSettings.getLastSearch();
+        if ( settingsService.isSettingsPresent("CatalogSettings") ){
+            CatalogSettings catalogSettings =
+                    (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
+            return catalogSettings.getLastSearch();
+        } else return "";
     }
 
 
