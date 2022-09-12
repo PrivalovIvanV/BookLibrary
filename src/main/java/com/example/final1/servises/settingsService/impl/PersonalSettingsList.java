@@ -31,7 +31,7 @@ public class PersonalSettingsList {
             setting.update(settings);
         } else {
             listSettings.put(key, settings);
-            log.info("Для текущего пользователя была добавлена настройка {}", key);
+            log.info("Из-за отсутствия у пользователя {}, мы ее добавили", key);
         }
     }
 
@@ -42,7 +42,7 @@ public class PersonalSettingsList {
         Pattern classNamePattern = Pattern.compile("[.]([A-Z]\\w+)");
         Matcher matcher = classNamePattern.matcher(text.getClass().toString());
         matcher.find();
-        return matcher.group(1).toLowerCase();
+        return matcher.group(1);
     }
 
 }

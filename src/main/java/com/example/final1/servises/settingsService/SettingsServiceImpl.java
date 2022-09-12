@@ -26,35 +26,38 @@ public class SettingsServiceImpl implements SettingsService {
 
 
     @Override
-    public void addSettings(Settings settings){
-        getSettingsForCurrentUser().update(settings);
+    public <T extends Settings> void addSettings(T settings){
+        getListSettingsForCurrentUser().update(settings);
     }
 
 
     @Override// у текущего пользователя берем конкретные настройки с именем nameSettings
-    public Settings getSettingsByName(String nameSettings) throws FilterNotFoundException {
+    public <T extends Settings> T getSettings(Class<T> clazz) throws FilterNotFoundException {
+        String key = parseClassName(clazz);
         Map<String, Settings> listSettings =
-                cash.get(keyCurrentUser()).getListSettings();
+                getListSettingsForCurrentUser().getListSettings();
 
-        if (isSettingsPresent(nameSettings)) {
-            return listSettings.get(nameSettings.toLowerCase());
+        if (isPresent(clazz)) {
+            return (T) listSettings.get(key);
         } else {
-            log.warn("У пользователя с id {}, не оказалось настройки с именем {}", keyCurrentUser(), nameSettings);
-            throw new FilterNotFoundException(nameSettings);
+            log.warn("У пользователя с id {}, не оказалось настройки с именем {}", keyCurrentUser(), key);
+            throw new FilterNotFoundException(key);
         }
     }
 
-    public boolean isSettingsPresent(String nameSettings){
+    @Override
+    public <T extends Settings> boolean isPresent(Class<T> clazz){
+        String key = parseClassName(clazz);
         Map<String, Settings> listSettings =
-                getSettingsForCurrentUser().getListSettings();
-        if (listSettings.containsKey(nameSettings.toLowerCase())) return true;
-
+                getListSettingsForCurrentUser().getListSettings();
+        if (listSettings.containsKey(key)) return true;
+        log.info("Проверка на наличие {} у пользователя", key);
         return false;
     }
 
 
     //В этом методе и происходит кэширование настроек для каждого отдельного пользователя
-    public PersonalSettingsList getSettingsForCurrentUser(){
+    public PersonalSettingsList getListSettingsForCurrentUser(){
         long key = keyCurrentUser();
         if (!cash.containsKey(key)) {
             cash.put(key, new PersonalSettingsList());
@@ -83,6 +86,13 @@ public class SettingsServiceImpl implements SettingsService {
         ipWithColon = ipWithColon.replaceAll("\\D", "");
         long ip = Integer.valueOf(ipWithColon);
         return ip;
+    }
+
+    private <T extends Settings> String parseClassName(Class<T> clazz){
+        Pattern classNamePattern = Pattern.compile("[.]([A-Z]\\w+)");
+        Matcher matcher = classNamePattern.matcher(clazz.toString());
+        matcher.find();
+        return matcher.group(1);
     }
 
 

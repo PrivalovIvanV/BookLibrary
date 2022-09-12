@@ -43,7 +43,7 @@ public class SettingsForCatalog implements Settings {
     }
 
     @Override
-    public List<String> getSettings(){
+    public List<String> getContent(){
 
         List<String> filterList = new ArrayList<>();
 

@@ -59,12 +59,10 @@ public class CatalogController {
                           @RequestParam(name = "isAll", required = false) String isAll,
                           Model model){
 
-        SettingsForCatalog settings =
-                new SettingsForCatalog(page, query, isAll, CS, FICTION, HISTORY, COMICS);
+        SettingsForCatalog settings = new SettingsForCatalog(page, query, isAll, CS, FICTION, HISTORY, COMICS);
         settingsService.addSettings(settings);
 
-        SettingsForCatalog settingsForCatalog =
-                (SettingsForCatalog) settingsService.getSettingsByName("SettingsForCatalog");
+        SettingsForCatalog settingsForCatalog = settingsService.getSettings(SettingsForCatalog.class);
         List<Book> unsortedListWithBook = bookService.findAll();
         List<List<Book>> pagesList = allocateListToPage(unsortedListWithBook);
 
@@ -145,18 +143,16 @@ public class CatalogController {
     }
 
     private int lastPage(){
-        if (settingsService.isSettingsPresent("SettingsForCatalog")){
-            SettingsForCatalog settingsForCatalog =
-                    (SettingsForCatalog) settingsService.getSettingsByName("SettingsForCatalog");
+        if (settingsService.isPresent(SettingsForCatalog.class)){
+            SettingsForCatalog settingsForCatalog = settingsService.getSettings(SettingsForCatalog.class);
             log.info("Последняя страница, где был пользователь {}", settingsForCatalog.getLastPage());
             return settingsForCatalog.getLastPage();
         } else return 0;
     }
 
     private String lastSearch(){
-        if ( settingsService.isSettingsPresent("SettingsForCatalog") ){
-            SettingsForCatalog settingsForCatalog =
-                    (SettingsForCatalog) settingsService.getSettingsByName("SettingsForCatalog");
+        if ( settingsService.isPresent(SettingsForCatalog.class) ){
+            SettingsForCatalog settingsForCatalog = settingsService.getSettings(SettingsForCatalog.class);
             return settingsForCatalog.getLastSearch();
         } else return "";
     }

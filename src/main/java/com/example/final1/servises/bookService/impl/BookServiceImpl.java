@@ -37,7 +37,7 @@ public class BookServiceImpl {
     public List<Book> findAll(){
 
         SettingsForCatalog filter =
-                (SettingsForCatalog) settingsServiceImpl.getSettingsByName("SettingsForCatalog");
+                settingsServiceImpl.getSettings(SettingsForCatalog.class);
         int page = filter.getLastPage();
         String query = filter.getLastSearch();
 
@@ -88,8 +88,8 @@ public class BookServiceImpl {
     public List<Book> findAllWithFilter(String query){
         List<Book> responseList = new ArrayList<>();
         List<Book> untreatedList = bookRepo.getBooksByQuery(query);
-        SettingsForCatalog catalogPageSettings = (SettingsForCatalog) settingsServiceImpl.getSettingsByName("SettingsForCatalog");
-        List<String> filterList = catalogPageSettings.getSettings();
+        SettingsForCatalog catalogPageSettings = settingsServiceImpl.getSettings(SettingsForCatalog.class);
+        List<String> filterList = catalogPageSettings.getContent();
         if (filterList.size() != 0) {
             for (String filter : filterList) {
                 for (Book book : untreatedList){
