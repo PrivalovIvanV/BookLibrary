@@ -3,7 +3,7 @@ package com.example.final1.servises.settingsService;
 import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.security.PersonDetails;
 import com.example.final1.servises.settingsService.api.SettingsService;
-import com.example.final1.servises.settingsService.impl.PersonalSettings;
+import com.example.final1.servises.settingsService.impl.PersonalSettingsList;
 import com.example.final1.servises.settingsService.impl.entity.Settings;
 import com.example.final1.servises.settingsService.util.FilterNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 @Component
 public class SettingsServiceImpl implements SettingsService {
 
-    private final Map<Long, PersonalSettings> cash = new HashMap<>();
+    private final Map<Long, PersonalSettingsList> cash = new HashMap<>();
     private Authentication authentication;
 
 
@@ -54,10 +54,10 @@ public class SettingsServiceImpl implements SettingsService {
 
 
     //В этом методе и происходит кэширование настроек для каждого отдельного пользователя
-    public PersonalSettings getSettingsForCurrentUser(){
+    public PersonalSettingsList getSettingsForCurrentUser(){
         long key = keyCurrentUser();
         if (!cash.containsKey(key)) {
-            cash.put(key, new PersonalSettings());
+            cash.put(key, new PersonalSettingsList());
         }
         return cash.get(key);
 

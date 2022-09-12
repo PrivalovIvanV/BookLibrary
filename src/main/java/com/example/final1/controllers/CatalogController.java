@@ -5,7 +5,7 @@ import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.servises.bookService.impl.BookServiceImpl;
 import com.example.final1.servises.personService.impl.PersonService;
 import com.example.final1.servises.settingsService.api.SettingsService;
-import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
+import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -59,26 +59,26 @@ public class CatalogController {
                           @RequestParam(name = "isAll", required = false) String isAll,
                           Model model){
 
-        CatalogSettings settings =
-                new CatalogSettings(page, query, isAll, CS, FICTION, HISTORY, COMICS);
+        SettingsForCatalog settings =
+                new SettingsForCatalog(page, query, isAll, CS, FICTION, HISTORY, COMICS);
         settingsService.addSettings(settings);
 
-        CatalogSettings catalogSettings =
-                (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
+        SettingsForCatalog settingsForCatalog =
+                (SettingsForCatalog) settingsService.getSettingsByName("SettingsForCatalog");
         List<Book> unsortedListWithBook = bookService.findAll();
-        List<List<Book>> listForPage = allocateListToPage(unsortedListWithBook);
+        List<List<Book>> pagesList = allocateListToPage(unsortedListWithBook);
 
         //пробуем отправить лист с книгами
         try{
-            model.addAttribute("bookList", listForPage.get(lastPage()));
+            model.addAttribute("bookList", pagesList.get(lastPage()));
         } catch (IndexOutOfBoundsException e){
             model.addAttribute("bookList", new ArrayList<>());
 
         }
-        model.addAttribute("bookFilter", catalogSettings);
+        model.addAttribute("bookFilter", settingsForCatalog);
         model.addAttribute("currentPage", lastPage());
         model.addAttribute("searchVal", lastSearch());
-        model.addAttribute("PageIterator", PageIterator(listForPage.size()));
+        model.addAttribute("PageIterator", PageIterator(pagesList.size()));
         return "book/BookCatalog";
     }
 
@@ -145,19 +145,19 @@ public class CatalogController {
     }
 
     private int lastPage(){
-        if (settingsService.isSettingsPresent("CatalogSettings")){
-            CatalogSettings catalogSettings =
-                    (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
-            log.info("Последняя страница, где был пользователь {}", catalogSettings.getLastPage());
-            return catalogSettings.getLastPage();
+        if (settingsService.isSettingsPresent("SettingsForCatalog")){
+            SettingsForCatalog settingsForCatalog =
+                    (SettingsForCatalog) settingsService.getSettingsByName("SettingsForCatalog");
+            log.info("Последняя страница, где был пользователь {}", settingsForCatalog.getLastPage());
+            return settingsForCatalog.getLastPage();
         } else return 0;
     }
 
     private String lastSearch(){
-        if ( settingsService.isSettingsPresent("CatalogSettings") ){
-            CatalogSettings catalogSettings =
-                    (CatalogSettings) settingsService.getSettingsByName("CatalogSettings");
-            return catalogSettings.getLastSearch();
+        if ( settingsService.isSettingsPresent("SettingsForCatalog") ){
+            SettingsForCatalog settingsForCatalog =
+                    (SettingsForCatalog) settingsService.getSettingsByName("SettingsForCatalog");
+            return settingsForCatalog.getLastSearch();
         } else return "";
     }
 

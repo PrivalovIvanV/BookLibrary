@@ -1,6 +1,7 @@
 package com.example.final1.servises.settingsService.impl;
 
 import com.example.final1.servises.settingsService.impl.entity.Settings;
+import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,12 +12,12 @@ import java.util.regex.Pattern;
 
 @Slf4j
 @Getter
-public class PersonalSettings {
+public class PersonalSettingsList {
 
 
-    private Map<String, Settings> listSettings;
+    private final Map<String, Settings> listSettings;
 
-    public PersonalSettings() {
+    public PersonalSettingsList() {
         listSettings = new HashMap<>();
     }
 
@@ -36,12 +37,12 @@ public class PersonalSettings {
 
 
     private String parseClassName(Settings text){
+        System.out.println(text);
+        System.out.println(SettingsForCatalog.class);
         Pattern classNamePattern = Pattern.compile("[.]([A-Z]\\w+)");
         Matcher matcher = classNamePattern.matcher(text.getClass().toString());
         matcher.find();
         return matcher.group(1).toLowerCase();
     }
-//    public PageStatus getPageStatus(){
-//        return (PageStatus) listSettings.get("pagestatus");
-//    }
+
 }

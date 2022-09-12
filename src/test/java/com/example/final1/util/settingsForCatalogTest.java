@@ -1,6 +1,6 @@
 package com.example.final1.util;
 
-import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
+import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,32 +8,32 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CatalogSettingsTest {
+public class settingsForCatalogTest {
 
-    private CatalogSettings catalogSettings;
+    private SettingsForCatalog settingsForCatalog;
 
     @Before
     public void setUp() throws Exception {
-        catalogSettings = new CatalogSettings();
+        settingsForCatalog = new SettingsForCatalog();
      //   catalogPageStatus.updateFilter(true, true, true, true, "allBook");
     }
 
     @Test
     public void addNewFilter() {
-        Assert.assertTrue(catalogSettings.isHaveAFilter());
+        Assert.assertTrue(settingsForCatalog.isHaveAFilter());
     }
 
     @Test
     public void whenWeRefreshFilterIsHaveFilterShouldBeFalse() {
      //   catalogPageStatus.updateFilter(false, false, false, false, "allBook");
-        Assert.assertFalse(catalogSettings.isHaveAFilter());
+        Assert.assertFalse(settingsForCatalog.isHaveAFilter());
     }
 
     @Test
     public void setIsAllInFalse() {
     //    catalogPageStatus.updateFilter(false, false, false, false, "al");
-        Assert.assertTrue(catalogSettings.isHaveAFilter());
-        Assert.assertFalse(catalogSettings.isAll());
+        Assert.assertTrue(settingsForCatalog.isHaveAFilter());
+        Assert.assertFalse(settingsForCatalog.isAll());
     }
 
     @Test
@@ -41,7 +41,7 @@ public class CatalogSettingsTest {
         List<String> filterList = new ArrayList<>();
     //    catalogPageStatus.updateFilter(false, false, false, false, "al");
 
-        Assert.assertEquals(0, catalogSettings.getFilterList().size());
+        Assert.assertEquals(0, settingsForCatalog.getFilterList().size());
     }
 
     @Test
@@ -51,8 +51,8 @@ public class CatalogSettingsTest {
         filterList.add("FICTION");
         filterList.add("HISTORY");
 
-        Assert.assertEquals(2, catalogSettings.getFilterList().size());
-        Assert.assertEquals(filterList, catalogSettings.getFilterList());
+        Assert.assertEquals(2, settingsForCatalog.getFilterList().size());
+        Assert.assertEquals(filterList, settingsForCatalog.getFilterList());
     }
 
 //    @Test

@@ -8,7 +8,7 @@ import com.example.final1.servises.bookService.impl.repo.BookRepoApi;
 import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.servises.personService.impl.PersonService;
 import com.example.final1.servises.settingsService.SettingsServiceImpl;
-import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
+import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +36,8 @@ public class BookServiceImpl {
     @SneakyThrows
     public List<Book> findAll(){
 
-        CatalogSettings filter =
-                (CatalogSettings) settingsServiceImpl.getSettingsByName("CatalogSettings");
+        SettingsForCatalog filter =
+                (SettingsForCatalog) settingsServiceImpl.getSettingsByName("SettingsForCatalog");
         int page = filter.getLastPage();
         String query = filter.getLastSearch();
 
@@ -88,8 +88,8 @@ public class BookServiceImpl {
     public List<Book> findAllWithFilter(String query){
         List<Book> responseList = new ArrayList<>();
         List<Book> untreatedList = bookRepo.getBooksByQuery(query);
-        CatalogSettings catalogPageSettings = (CatalogSettings) settingsServiceImpl.getSettingsByName("CatalogSettings");
-        List<String> filterList = catalogPageSettings.getFilterList();
+        SettingsForCatalog catalogPageSettings = (SettingsForCatalog) settingsServiceImpl.getSettingsByName("SettingsForCatalog");
+        List<String> filterList = catalogPageSettings.getSettings();
         if (filterList.size() != 0) {
             for (String filter : filterList) {
                 for (Book book : untreatedList){
