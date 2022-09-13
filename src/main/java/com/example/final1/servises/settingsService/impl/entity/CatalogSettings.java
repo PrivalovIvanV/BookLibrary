@@ -10,7 +10,7 @@ import java.util.List;
 @Slf4j
 @Getter
 @NoArgsConstructor
-public class SettingsForCatalog implements Settings {
+public class CatalogSettings implements Settings {
 
     private boolean haveAFilter = false;
 
@@ -24,15 +24,40 @@ public class SettingsForCatalog implements Settings {
     private String lastSearch = "";
     private int lastPage = 0;
 
-    public SettingsForCatalog(Integer page, String query, String isAll,
-                              boolean CS, boolean FICTION, boolean HISTORY, boolean COMICS) {
+    public CatalogSettings(Integer page, String query, String isAll,
+                           boolean CS, boolean FICTION, boolean HISTORY, boolean COMICS) {
         update(page, query, isAll, CS, FICTION, HISTORY, COMICS);
     }
 
 
+    private void update(Integer page, String query, String isAll,
+                        boolean CS, boolean FICTION, boolean HISTORY, boolean COMICS){
+        this.lastPageInteger = page;
+
+        updatePageStatus(page, query, isAll);
+        if (isAll != null) {
+            this.isAllStr = isAll;
+            this.CS = CS;
+            this.FICTION = FICTION;
+            this.HISTORY = HISTORY;
+            this.COMICS = COMICS;
+            haveAFilter = true;
+            if (isAll.equals("allBook")){
+                if (CS == false && FICTION == false && HISTORY == false && COMICS == false) haveAFilter = false;
+                this.isAll = true;
+            } else {
+                this.isAll = false;
+            }
+
+        }
+
+
+
+    }
+
     @Override
     public void update(Settings setting){
-        SettingsForCatalog settings = (SettingsForCatalog) setting;
+        CatalogSettings settings = (CatalogSettings) setting;
         update(settings.getLastPageInteger(),
                 settings.getLastSearch(),
                 settings.getIsAllStr(),
@@ -59,37 +84,11 @@ public class SettingsForCatalog implements Settings {
         return filterList;
     }
 
-    private void update(Integer page, String query, String isAll,
-                       boolean CS, boolean FICTION, boolean HISTORY, boolean COMICS){
-        lastPageInteger = page;
-
-        updatePageStatus(page, query, isAll);
-        if (isAll != null) {
-            isAllStr = isAll;
-            this.CS = CS;
-            this.FICTION = FICTION;
-            this.HISTORY = HISTORY;
-            this.COMICS = COMICS;
-            haveAFilter = true;
-            if (isAll.equals("allBook")){
-                if (CS == false && FICTION == false && HISTORY == false && COMICS == false) haveAFilter = false;
-                this.isAll = true;
-            } else {
-                this.isAll = false;
-            }
-
-        }
-
-
-
-    }
-
     private void updatePageStatus(Integer page, String query, String isAll){
 
         if (page == null && isAll == null && (query != null && query.equals(""))) lastSearch = "";
         if (page != null) lastPage = page.intValue();
         if ((query != null) && !query.equals("")) lastSearch = query;
-        //Если у нас новый поисковый запрос, то lastPage сбрасывается
         if (((query != null) && !query.equals("")) && page == null) lastPage = 0;
         if (((query != null) && !query.equals("")) && isAll != null) lastSearch = "";
         if ((query == null || query.equals("")) && page == null && isAll != null) lastPage = 0;

@@ -27,7 +27,7 @@ public class SettingsServiceImpl implements SettingsService {
 
     @Override
     public <T extends Settings> void addSettings(T settings){
-        getListSettingsForCurrentUser().update(settings);
+        getListForCurrentUser().update(settings);
     }
 
 
@@ -35,7 +35,7 @@ public class SettingsServiceImpl implements SettingsService {
     public <T extends Settings> T getSettings(Class<T> clazz) throws FilterNotFoundException {
         String key = parseClassName(clazz);
         Map<String, Settings> listSettings =
-                getListSettingsForCurrentUser().getListSettings();
+                getListForCurrentUser().getListSettings();
 
         if (isPresent(clazz)) {
             return (T) listSettings.get(key);
@@ -49,7 +49,7 @@ public class SettingsServiceImpl implements SettingsService {
     public <T extends Settings> boolean isPresent(Class<T> clazz){
         String key = parseClassName(clazz);
         Map<String, Settings> listSettings =
-                getListSettingsForCurrentUser().getListSettings();
+                getListForCurrentUser().getListSettings();
         if (listSettings.containsKey(key)) return true;
         log.info("Проверка на наличие {} у пользователя", key);
         return false;
@@ -57,7 +57,7 @@ public class SettingsServiceImpl implements SettingsService {
 
 
     //В этом методе и происходит кэширование настроек для каждого отдельного пользователя
-    public PersonalSettingsList getListSettingsForCurrentUser(){
+    private PersonalSettingsList getListForCurrentUser(){
         long key = keyCurrentUser();
         if (!cash.containsKey(key)) {
             cash.put(key, new PersonalSettingsList());

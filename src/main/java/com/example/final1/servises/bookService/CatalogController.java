@@ -2,11 +2,11 @@ package com.example.final1.servises.bookService;
 
 import com.example.final1.servises.bookService.api.BookService;
 import com.example.final1.servises.bookService.impl.entity.Book;
+import com.example.final1.servises.personService.api.PersonService;
 import com.example.final1.servises.personService.api.UserNotAuthException;
 import com.example.final1.servises.personService.impl.entity.Person;
-import com.example.final1.servises.personService.impl.PersonServiceImpl;
 import com.example.final1.servises.settingsService.api.SettingsService;
-import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
+import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ import java.util.List;
 public class CatalogController {
 
     private final BookService bookService;
-    private final PersonServiceImpl personSer;
+    private final PersonService personSer;
     private final SettingsService settingsService;
 
 
@@ -63,10 +63,10 @@ public class CatalogController {
                           @RequestParam(name = "isAll", required = false) String isAll,
                           Model model){
 
-        SettingsForCatalog settings = new SettingsForCatalog(page, query, isAll, CS, FICTION, HISTORY, COMICS);
+        CatalogSettings settings = new CatalogSettings(page, query, isAll, CS, FICTION, HISTORY, COMICS);
         settingsService.addSettings(settings);
 
-        SettingsForCatalog settingsForCatalog = settingsService.getSettings(SettingsForCatalog.class);
+        CatalogSettings catalogSettings = settingsService.getSettings(CatalogSettings.class);
         List<Book> unsortedListWithBook = bookService.findAll();
         List<List<Book>> pagesList = allocateListToPage(unsortedListWithBook);
 
@@ -77,7 +77,7 @@ public class CatalogController {
             model.addAttribute("bookList", new ArrayList<>());
 
         }
-        model.addAttribute("bookFilter", settingsForCatalog);
+        model.addAttribute("bookFilter", catalogSettings);
         model.addAttribute("currentPage", lastPage());
         model.addAttribute("searchVal", lastSearch());
         model.addAttribute("PageIterator", PageIterator(pagesList.size()));
@@ -95,10 +95,9 @@ public class CatalogController {
 
         try {
             bookService.addOwner(id, personSer.getCurrentUser().getId());
-        } catch (UserNotAuthException e) {
-            log.warn("Неавторизированный пользователь пытается добавить книгу");
+        } catch (Exception e) {
+            log.warn("Не авторизированный пользователь пытается добавить книгу");
         }
-
 
         model.addAttribute("searchVal", lastSearch());
         model.addAttribute("book", bookService.findById(id));
@@ -153,16 +152,16 @@ public class CatalogController {
     }
 
     private int lastPage(){
-        if (settingsService.isPresent(SettingsForCatalog.class)){
-            SettingsForCatalog settingsForCatalog = settingsService.getSettings(SettingsForCatalog.class);
-            return settingsForCatalog.getLastPage();
+        if (settingsService.isPresent(CatalogSettings.class)){
+            CatalogSettings catalogSettings = settingsService.getSettings(CatalogSettings.class);
+            return catalogSettings.getLastPage();
         } else return 0;
     }
 
     private String lastSearch(){
-        if ( settingsService.isPresent(SettingsForCatalog.class) ){
-            SettingsForCatalog settingsForCatalog = settingsService.getSettings(SettingsForCatalog.class);
-            return settingsForCatalog.getLastSearch();
+        if ( settingsService.isPresent(CatalogSettings.class) ){
+            CatalogSettings catalogSettings = settingsService.getSettings(CatalogSettings.class);
+            return catalogSettings.getLastSearch();
         } else return "";
     }
 

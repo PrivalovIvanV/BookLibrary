@@ -10,7 +10,7 @@ import com.example.final1.servises.personService.api.UserNotAuthException;
 import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.servises.personService.impl.PersonServiceImpl;
 import com.example.final1.servises.settingsService.api.SettingsService;
-import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
+import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +38,8 @@ public class BookServiceImpl implements BookService {
     @SneakyThrows
     public List<Book> findAll(){
 
-        SettingsForCatalog filter =
-                settingsService.getSettings(SettingsForCatalog.class);
+        CatalogSettings filter =
+                settingsService.getSettings(CatalogSettings.class);
         String query = filter.getLastSearch();
 
         if (filter.isHaveAFilter()){
@@ -91,7 +91,7 @@ public class BookServiceImpl implements BookService {
     private List<Book> sorted(String query){
         List<Book> responseList = new ArrayList<>();
         List<Book> untreatedList = bookRepo.getBooksByQuery(query);
-        SettingsForCatalog catalogPageSettings = settingsService.getSettings(SettingsForCatalog.class);
+        CatalogSettings catalogPageSettings = settingsService.getSettings(CatalogSettings.class);
         List<String> filterList = catalogPageSettings.getContent();
         if (filterList.size() != 0) {
             for (String filter : filterList) {

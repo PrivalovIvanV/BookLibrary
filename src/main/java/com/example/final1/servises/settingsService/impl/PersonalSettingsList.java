@@ -1,7 +1,7 @@
 package com.example.final1.servises.settingsService.impl;
 
 import com.example.final1.servises.settingsService.impl.entity.Settings;
-import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
+import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +36,7 @@ public class PersonalSettingsList {
 
     private String parseClassName(Settings text){
         System.out.println(text);
-        System.out.println(SettingsForCatalog.class);
+        System.out.println(CatalogSettings.class);
         Pattern classNamePattern = Pattern.compile("[.]([A-Z]\\w+)");
         Matcher matcher = classNamePattern.matcher(text.getClass().toString());
         matcher.find();
