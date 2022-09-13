@@ -44,12 +44,13 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
     }           //проверка на авторизацию пользователя в системе
 
     @Override
-    public Person getCurrentUser() throws UserNotAuthException{
+    public Person getCurrentUser(){
         int currentId = getCurrentUserID();
         if ( currentId != -1){
             return repo.findById(currentId).get();
         }
-        throw new UserNotAuthException();
+        return null;
+//        throw new UserNotAuthException();
     }    //получение текущего пользователя
 
 
@@ -82,7 +83,7 @@ public class PersonServiceImpl implements UserDetailsService, PersonService {
         return new PersonDetails(user.get());
     }
 
-    private static int getCurrentUserID(){
+    public static int getCurrentUserID(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         try {
             Person user = ((PersonDetails) authentication.getPrincipal()).getPerson();

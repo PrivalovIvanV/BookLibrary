@@ -3,11 +3,13 @@ package com.example.final1.servises.bookService.impl;
 
 
 
+import com.example.final1.servises.bookService.api.BookService;
 import com.example.final1.servises.bookService.impl.entity.Book;
 import com.example.final1.servises.bookService.impl.repo.BookRepoApi;
+import com.example.final1.servises.personService.api.UserNotAuthException;
 import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.servises.personService.impl.PersonServiceImpl;
-import com.example.final1.servises.settingsService.SettingsServiceImpl;
+import com.example.final1.servises.settingsService.api.SettingsService;
 import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -25,11 +27,11 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class BookServiceImpl {
+public class BookServiceImpl implements BookService {
 
-    private final JdbcTemplate jdbcTemplate;
-    private final SettingsServiceImpl settingsServiceImpl;
     private final BookRepoApi bookRepo;
+    private final JdbcTemplate jdbcTemplate;
+    private final SettingsService settingsService;
     private final PersonServiceImpl personService;
 
 
@@ -37,38 +39,25 @@ public class BookServiceImpl {
     public List<Book> findAll(){
 
         SettingsForCatalog filter =
-                settingsServiceImpl.getSettings(SettingsForCatalog.class);
-        int page = filter.getLastPage();
+                settingsService.getSettings(SettingsForCatalog.class);
         String query = filter.getLastSearch();
 
         if (filter.isHaveAFilter()){
-            return findAllWithFilter(query);
+            return sorted(query);
         }else
             return bookRepo.getBooksByQuery(query);
     }
 
 
-
-
-    public List<Book> findBooksByPersonId(int id){
-        int idCurrentUser = id;
-        return jdbcTemplate.query("select * from book where person_id = ?",
-                new Object[]{idCurrentUser},
-                new BeanPropertyRowMapper<>(Book.class));
-
-    }
-    public Book findById(int id){
-        return bookRepo.getBook(id);
-    }
-
-    public void save(Book book){
-        bookRepo.saveBook(book);
-    }
-
-
+    @Override
     @Transactional
-    public void addOwnerForBook(int bookId, int personId){
-        Person owner = personService.getCurrentUser();
+    public void addOwner(int bookId, int personId){
+        Person owner = null;
+        try {
+            owner = personService.getCurrentUser();
+        } catch (UserNotAuthException e) {
+            throw new RuntimeException(e);
+        }
         Book addedBook = bookRepo.getBook(bookId);
 
         if (addedBook.isAccess()){
@@ -78,17 +67,31 @@ public class BookServiceImpl {
             bookRepo.saveBook(addedBook);
             personService.save(owner);
         }
+    }
+    public List<Book> findByPersonId(int id){
+        int idCurrentUser = id;
+        return jdbcTemplate.query("select * from book where person_id = ?",
+                new Object[]{idCurrentUser},
+                new BeanPropertyRowMapper<>(Book.class));
 
+    }
 
+    public Book findById(int id){
+        return bookRepo.getBook(id);
+    }
+
+    public void save(Book book){
+        bookRepo.saveBook(book);
     }
 
 
 
+
     @SneakyThrows
-    private List<Book> findAllWithFilter(String query){
+    private List<Book> sorted(String query){
         List<Book> responseList = new ArrayList<>();
         List<Book> untreatedList = bookRepo.getBooksByQuery(query);
-        SettingsForCatalog catalogPageSettings = settingsServiceImpl.getSettings(SettingsForCatalog.class);
+        SettingsForCatalog catalogPageSettings = settingsService.getSettings(SettingsForCatalog.class);
         List<String> filterList = catalogPageSettings.getContent();
         if (filterList.size() != 0) {
             for (String filter : filterList) {

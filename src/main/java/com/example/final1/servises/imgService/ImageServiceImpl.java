@@ -1,5 +1,6 @@
 package com.example.final1.servises.imgService;
 
+import com.example.final1.servises.imgService.api.ImageService;
 import com.example.final1.servises.imgService.impl.AvatarService;
 import com.example.final1.servises.imgService.impl.entity.PersonImage;
 import com.example.final1.servises.personService.impl.entity.Person;
@@ -15,7 +16,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class ImageService {
+public class ImageServiceImpl implements ImageService {
 
     private final AvatarService avatarService;
     private final JdbcTemplate jdbcTemplate;
@@ -41,7 +42,7 @@ public class ImageService {
             person.setAvatar(image);
 
 
-            if (isHaveAvatar()){
+            if (isHaveAvatar(person_id)){
                 int image_id = avatarService.getById(person_id).getId();
                 image.setId(image_id);
                 avatarService.saveAvatar(image);
@@ -51,6 +52,7 @@ public class ImageService {
         }
     }
 
+
     private PersonImage toImageEntity(MultipartFile file) throws IOException {
         PersonImage image = new PersonImage();
         image.setName(file.getName());
@@ -59,5 +61,11 @@ public class ImageService {
         image.setSize(file.getSize());
         image.setBytes(file.getBytes());
         return image;
+    }
+
+    private boolean isHaveAvatar(int id){
+        PersonImage image = avatarService.getById(id);
+        if (image != null) return true;
+        return false;
     }
 }

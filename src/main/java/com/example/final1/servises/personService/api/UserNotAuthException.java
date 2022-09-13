@@ -1,6 +1,6 @@
 package com.example.final1.servises.personService.api;
 
-public class UserNotAuthException extends Exception{
+public class UserNotAuthException extends RuntimeException{
     public UserNotAuthException() {
     }
 

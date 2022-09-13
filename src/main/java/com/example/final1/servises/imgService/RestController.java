@@ -3,7 +3,7 @@ package com.example.final1.servises.imgService;
 
 import com.example.final1.servises.imgService.impl.entity.BookImage;
 import com.example.final1.servises.imgService.impl.entity.PersonImage;
-import com.example.final1.servises.imgService.impl.BookImageService;
+import com.example.final1.servises.imgService.impl.IconService;
 import com.example.final1.servises.imgService.impl.AvatarService;
 import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.security.PersonDetails;
@@ -26,7 +26,7 @@ public class RestController {
 
     private final AvatarService avatarService;
     private final JdbcTemplate jdbcTemplate;
-    private final BookImageService bookService;
+    private final IconService bookService;
 
     @GetMapping("/personAvatar")
     private ResponseEntity<?> getImageById() {

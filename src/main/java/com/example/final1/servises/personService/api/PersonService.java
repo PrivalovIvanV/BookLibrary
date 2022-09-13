@@ -5,9 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface PersonService {
     boolean isAuth();
-    Person getCurrentUser() throws UserNotAuthException;
+    Person getCurrentUser();
     void UpdatePerson(Person person);
-    void addAvatar(MultipartFile file);
     void save(Person person);
-    void deleteAvatar();
 }

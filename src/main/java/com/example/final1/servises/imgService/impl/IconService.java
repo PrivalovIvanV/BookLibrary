@@ -1,9 +1,9 @@
 package com.example.final1.servises.imgService.impl;
 
+import com.example.final1.servises.bookService.api.BookService;
 import com.example.final1.servises.imgService.impl.entity.BookImage;
 import com.example.final1.servises.imgService.impl.repo.BookImageRepository;
 import com.example.final1.servises.bookService.impl.entity.Book;
-import com.example.final1.servises.bookService.impl.BookServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -15,21 +15,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BookImageService {
+public class IconService {
 
     private final BookImageRepository bookRepository;
     private final JdbcTemplate jdbcTemplate;
-    private final BookServiceImpl bookServiceImpl;
+    private final BookService bookService;
 
 
 
     @Transactional
-    public void saveBookImg(BookImage bookImage, int book_id){
-        Book book = bookServiceImpl.findById(book_id);
+    public void saveIcon(BookImage bookImage, int book_id){
+        Book book = bookService.findById(book_id);
         book.setBookImage(bookImage);
         bookImage.setBook(book);
 
-        bookServiceImpl.save(book);
+        bookService.save(book);
         bookRepository.save(bookImage);
     }
 

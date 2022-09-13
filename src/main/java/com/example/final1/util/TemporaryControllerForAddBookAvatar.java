@@ -1,7 +1,7 @@
 package com.example.final1.util;
 
 import com.example.final1.servises.imgService.impl.entity.BookImage;
-import com.example.final1.servises.imgService.impl.BookImageService;
+import com.example.final1.servises.imgService.impl.IconService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import java.io.IOException;
 @RequestMapping("/addImageForBook")
 public class TemporaryControllerForAddBookAvatar {
 
-    private final BookImageService bookImageService;
+    private final IconService iconService;
     private static int num = 87;
 
     @GetMapping
@@ -35,7 +35,7 @@ public class TemporaryControllerForAddBookAvatar {
                            Model model){
         if (file1.getSize() != 0){
             BookImage bookImage = toImageEntity(file1);
-            bookImageService.saveBookImg(bookImage, book_id);
+            iconService.saveIcon(bookImage, book_id);
         }
         model.addAttribute("num", num++);
         return "e/create";

@@ -36,9 +36,9 @@ public class CatalogController {
         boolean isBookOwnedByCurrentUser;
         Book book =  bookService.findById(id);
 
-        try {
+        if (personSer.isAuth()){
             isBookOwnedByCurrentUser = personSer.getCurrentUser().isOwner(id);
-        } catch (UserNotAuthException e) {
+        } else {
             isBookOwnedByCurrentUser = false;
         }
         if (isCatalog == null) isLibrary = false;
@@ -94,7 +94,7 @@ public class CatalogController {
     public String addBookOwner(@PathVariable("id") int id, Model model){
 
         try {
-            bookService.addOwnerForBook(id, personSer.getCurrentUser().getId());
+            bookService.addOwner(id, personSer.getCurrentUser().getId());
         } catch (UserNotAuthException e) {
             log.warn("Неавторизированный пользователь пытается добавить книгу");
         }
@@ -145,7 +145,11 @@ public class CatalogController {
 
     @ModelAttribute(name = "AuthPerson")
     public Person getAuthPerson(){
-        return personSer.getCurrentUser();
+        try {
+            return personSer.getCurrentUser();
+        } catch (UserNotAuthException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private int lastPage(){

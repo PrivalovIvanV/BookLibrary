@@ -3,8 +3,11 @@ package com.example.final1.controllers;
 
 import com.example.final1.servises.bookService.api.BookService;
 import com.example.final1.servises.bookService.impl.entity.Book;
+import com.example.final1.servises.imgService.api.ImageService;
+import com.example.final1.servises.personService.api.PersonService;
 import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.servises.personService.impl.PersonServiceImpl;
+import com.example.final1.servises.settingsService.impl.PersonalSettingsList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PersonController {
 
-    private final PersonServiceImpl personSer;
+    private final PersonService personSer;
+    private final ImageService imageService;
     private final BookService bookService;
 
 
@@ -49,7 +53,7 @@ public class PersonController {
         Person bufForClone = personSer.getCurrentUser();
         Person updatedPerson = new Person(bufForClone);
         model.addAttribute("currentUser", updatedPerson);
-        personSer.deleteAvatar();
+        imageService.deleteAvatar(PersonServiceImpl.getCurrentUserID());
         return "person/edit";
     }
 
@@ -61,7 +65,7 @@ public class PersonController {
 
         if (bindingResult.hasErrors()){return "/person/edit";}
 
-        personSer.addAvatar(file1);
+        imageService.addAvatar(file1, PersonServiceImpl.getCurrentUserID());
         personSer.UpdatePerson(person);
         log.info("Попытка обновить данные человека с почтой {}", person.getEmail());
         return "redirect:/account";}
@@ -79,7 +83,7 @@ public class PersonController {
     @GetMapping("/myLibrary")
     public String catalog(Model model){
         int personId = personSer.getCurrentUser().getId();
-        List<Book> bookList = bookService.findBooksByPersonId(personId);
+        List<Book> bookList = bookService.findByPersonId(personId);
         model.addAttribute("bookList", bookList);
         return "book/myLibrary";
     }

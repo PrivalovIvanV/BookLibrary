@@ -58,7 +58,6 @@ public class Book {
 
     public boolean isOverdue(){
         if (taken_data == null) {
-
             return false;
         }
         if (intervalDate() > 15) return true;

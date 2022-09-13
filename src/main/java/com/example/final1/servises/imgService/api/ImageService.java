@@ -1,9 +1,10 @@
 package com.example.final1.servises.imgService.api;
 
-import com.example.final1.servises.imgService.impl.entity.Image;
-import com.example.final1.servises.imgService.impl.entity.PersonImage;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageService {
-    <T extends Image> void save(T personImage, int id);
+    void deleteAvatar(int person_id);
+    void addAvatar(MultipartFile file, int person_id);
     
 }
