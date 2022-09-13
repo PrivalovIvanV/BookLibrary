@@ -1,4 +1,4 @@
-package com.example.final1.controllers;
+package com.example.final1.servises.bookService;
 
 import com.example.final1.servises.bookService.api.BookService;
 import com.example.final1.servises.bookService.impl.entity.Book;
