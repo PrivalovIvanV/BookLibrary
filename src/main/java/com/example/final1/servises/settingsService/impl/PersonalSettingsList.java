@@ -20,9 +20,7 @@ public class PersonalSettingsList {
     public PersonalSettingsList() {
         listSettings = new HashMap<>();
     }
-
-
-
+    
     public void update(Settings settings){
         String key = parseClassName(settings);
 

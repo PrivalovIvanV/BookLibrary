@@ -14,18 +14,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ImageService {
+public class AvatarService{
 
     private final PersonImageRepository imageRepository;
     private final JdbcTemplate jdbcTemplate;
 
 
 
+
     @Transactional
-    public void savePersonImage(PersonImage personImage){ imageRepository.save(personImage);}
+    public void saveAvatar(PersonImage personImage){
+        imageRepository.save(personImage);
+    }
 
 
-    public PersonImage getImageByPersonId(int person_id){
+    public PersonImage getById(int person_id){
         PersonImage image = jdbcTemplate.query("select * from avatar_images where person_id = ?",
                 new Object[]{person_id},
                 new BeanPropertyRowMapper<>(PersonImage.class)

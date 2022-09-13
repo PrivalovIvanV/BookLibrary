@@ -6,7 +6,7 @@ package com.example.final1.servises.bookService.impl;
 import com.example.final1.servises.bookService.impl.entity.Book;
 import com.example.final1.servises.bookService.impl.repo.BookRepoApi;
 import com.example.final1.servises.personService.impl.entity.Person;
-import com.example.final1.servises.personService.impl.PersonService;
+import com.example.final1.servises.personService.impl.PersonServiceImpl;
 import com.example.final1.servises.settingsService.SettingsServiceImpl;
 import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class BookServiceImpl {
     private final JdbcTemplate jdbcTemplate;
     private final SettingsServiceImpl settingsServiceImpl;
     private final BookRepoApi bookRepo;
-    private final PersonService personService;
+    private final PersonServiceImpl personService;
 
 
     @SneakyThrows
@@ -85,7 +85,7 @@ public class BookServiceImpl {
 
 
     @SneakyThrows
-    public List<Book> findAllWithFilter(String query){
+    private List<Book> findAllWithFilter(String query){
         List<Book> responseList = new ArrayList<>();
         List<Book> untreatedList = bookRepo.getBooksByQuery(query);
         SettingsForCatalog catalogPageSettings = settingsServiceImpl.getSettings(SettingsForCatalog.class);

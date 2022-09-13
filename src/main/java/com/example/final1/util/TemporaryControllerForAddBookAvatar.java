@@ -1,4 +1,4 @@
-package com.example.final1.controllers;
+package com.example.final1.util;
 
 import com.example.final1.servises.imgService.impl.entity.BookImage;
 import com.example.final1.servises.imgService.impl.BookImageService;
@@ -17,7 +17,7 @@ import java.io.IOException;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/addImageForBook")
-public class bra {
+public class TemporaryControllerForAddBookAvatar {
 
     private final BookImageService bookImageService;
     private static int num = 87;
@@ -35,7 +35,7 @@ public class bra {
                            Model model){
         if (file1.getSize() != 0){
             BookImage bookImage = toImageEntity(file1);
-            bookImageService.saveBookImage(bookImage, book_id);
+            bookImageService.saveBookImg(bookImage, book_id);
         }
         model.addAttribute("num", num++);
         return "e/create";

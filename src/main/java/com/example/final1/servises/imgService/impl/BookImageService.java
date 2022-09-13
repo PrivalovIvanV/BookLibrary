@@ -11,8 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 
 @Slf4j
 @Service
@@ -26,7 +24,7 @@ public class BookImageService {
 
 
     @Transactional
-    public void saveBookImage(BookImage bookImage, int book_id){
+    public void saveBookImg(BookImage bookImage, int book_id){
         Book book = bookServiceImpl.findById(book_id);
         book.setBookImage(bookImage);
         bookImage.setBook(book);
@@ -36,7 +34,7 @@ public class BookImageService {
     }
 
 
-    public BookImage getImageByBookId(int book_id){
+    public BookImage getById(int book_id){
         BookImage image = jdbcTemplate.query("select * from book_images where book_id = ?",
                 new Object[]{book_id},
                 new BeanPropertyRowMapper<>(BookImage.class)

@@ -26,25 +26,25 @@ public class Person{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @NotBlank(message = "Заполни поле, педрила!")
+    @NotBlank(message = "Поле не может пустовать")
     @Column(name = "first_name")
-    @Size(max = 15, message = "Ебать у тебя имя огромное")
+    @Size(max = 15, message = "Имя превышает 15 символов")
     String first_name;
 
 
     @Column(name = "last_name")
-    @Size(max = 15, message = "Фамилия как у хача")
+    @Size(max = 15, message = "Значение не должно превышать 15 символов")
     String last_name;
 
 
     @Column(name = "email")
-    @NotBlank(message = "Заполни поле, педрила!")
-    @Email(message = "Сука, попросил же ввести почту, а не вьебаться головой в класиатуру")
+    @NotBlank(message = "Пожалуйста, заполните поле")
+    @Email(message = "Не корректная почта")
     String email;
 
 
     @Column(name = "password")
-    @NotBlank(message = "пароль не может быть пустым")
+    @NotBlank(message = "Обязательно для заполнения")
     String password;
 
 
@@ -77,11 +77,9 @@ public class Person{
         this.password = "*********";
     }
 
-    public boolean isOwnerThisBook(int bookId){
+    public boolean isOwner(int bookId){
         if (personLibrary == null) return false;
         return personLibrary.stream().anyMatch(book -> book.getId() == bookId);
     }
-
-    public String getFullName(){return first_name + " " + last_name;}
 
 }

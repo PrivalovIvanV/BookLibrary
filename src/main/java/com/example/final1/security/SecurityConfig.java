@@ -2,7 +2,7 @@ package com.example.final1.security;
 
 
 
-import com.example.final1.servises.personService.impl.PersonService;
+import com.example.final1.servises.personService.impl.PersonServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PersonService provider;
+    private final PersonServiceImpl provider;
 
 
 /////////////////////////////////////////////////////////////////////////////

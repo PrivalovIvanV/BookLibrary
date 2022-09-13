@@ -1,9 +1,10 @@
-package com.example.final1.servises.personService;
+package com.example.final1.controllers;
 
 
+import com.example.final1.servises.bookService.api.BookService;
+import com.example.final1.servises.bookService.impl.entity.Book;
 import com.example.final1.servises.personService.impl.entity.Person;
-import com.example.final1.servises.bookService.impl.BookServiceImpl;
-import com.example.final1.servises.personService.impl.PersonService;
+import com.example.final1.servises.personService.impl.PersonServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -21,8 +23,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class PersonController {
 
-    private final PersonService personSer;
-    private final BookServiceImpl bookServiceImpl;
+    private final PersonServiceImpl personSer;
+    private final BookService bookService;
 
 
 
@@ -52,10 +54,6 @@ public class PersonController {
     }
 
 
-
-
-
-
     @PostMapping("/account/edit")
     public String updatePerson (@ModelAttribute("currentUser") @Valid Person person,
                                 BindingResult bindingResult,
@@ -72,12 +70,6 @@ public class PersonController {
 
 
 
-
-
-
-
-
-
     ///////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////Все, что связанно с книгами////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -86,32 +78,23 @@ public class PersonController {
 
     @GetMapping("/myLibrary")
     public String catalog(Model model){
-        model.addAttribute("bookList", bookServiceImpl.findBooksByPersonId(personSer.getCurrentUser().getId()));
+        int personId = personSer.getCurrentUser().getId();
+        List<Book> bookList = bookService.findBooksByPersonId(personId);
+        model.addAttribute("bookList", bookList);
         return "book/myLibrary";
     }
-//
-//    @GetMapping("/catalog/{id}")
-//    public String bookPage(@PathVariable("id") int id, Model model){
-//        model.addAttribute("book", bookService.findById(id).get());
-//        return "book/BookPage";
-//    }
-
-
-
-
-
-
-
-
-
 
 
 
     @ModelAttribute(name = "isAuth")
-    public boolean isPersonAuth(){ return personSer.isAuth();}
+    public boolean isAuth(){
+        return personSer.isAuth();
+    }
 
     @ModelAttribute(name = "AuthPerson")
-    public Person getAuthPerson(){ return personSer.getCurrentUser();}
+    public Person getAuthPerson(){
+        return personSer.getCurrentUser();
+    }
 
 
 

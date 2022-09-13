@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookImage {
+public class BookImage implements Image{
 
 
         @Id

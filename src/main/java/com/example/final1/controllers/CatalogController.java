@@ -1,9 +1,10 @@
 package com.example.final1.controllers;
 
+import com.example.final1.servises.bookService.api.BookService;
 import com.example.final1.servises.bookService.impl.entity.Book;
+import com.example.final1.servises.personService.api.UserNotAuthException;
 import com.example.final1.servises.personService.impl.entity.Person;
-import com.example.final1.servises.bookService.impl.BookServiceImpl;
-import com.example.final1.servises.personService.impl.PersonService;
+import com.example.final1.servises.personService.impl.PersonServiceImpl;
 import com.example.final1.servises.settingsService.api.SettingsService;
 import com.example.final1.servises.settingsService.impl.entity.SettingsForCatalog;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CatalogController {
 
-    private final BookServiceImpl bookService;
-    private final PersonService personSer;
+    private final BookService bookService;
+    private final PersonServiceImpl personSer;
     private final SettingsService settingsService;
 
 
@@ -31,12 +32,15 @@ public class CatalogController {
     public String bookPage(@PathVariable("id") int id,
                            @RequestParam( name = "isCatalog", required = false) String isCatalog,
                            Model model){
-    log.info("lastPage равен {}", lastPage());
         boolean isLibrary = true;
-        boolean isBookOwnedByCurrentUser = false;
+        boolean isBookOwnedByCurrentUser;
         Book book =  bookService.findById(id);
 
-        if (isPersonAuth()) isBookOwnedByCurrentUser = personSer.getCurrentUser().isOwnerThisBook(id);
+        try {
+            isBookOwnedByCurrentUser = personSer.getCurrentUser().isOwner(id);
+        } catch (UserNotAuthException e) {
+            isBookOwnedByCurrentUser = false;
+        }
         if (isCatalog == null) isLibrary = false;
 
 
@@ -88,9 +92,11 @@ public class CatalogController {
 
     @PostMapping("/{id}")
     public String addBookOwner(@PathVariable("id") int id, Model model){
-        if (personSer.isAuth()) {
-            log.warn("Попытка добавить книгу");
+
+        try {
             bookService.addOwnerForBook(id, personSer.getCurrentUser().getId());
+        } catch (UserNotAuthException e) {
+            log.warn("Неавторизированный пользователь пытается добавить книгу");
         }
 
 
@@ -122,7 +128,7 @@ public class CatalogController {
     }
 
 
-    public List<Integer> PageIterator(int size){
+    private List<Integer> PageIterator(int size){
         List<Integer> list = new ArrayList<>();
         for (int i = 0; i < size; i++){
             list.add(i);
@@ -145,7 +151,6 @@ public class CatalogController {
     private int lastPage(){
         if (settingsService.isPresent(SettingsForCatalog.class)){
             SettingsForCatalog settingsForCatalog = settingsService.getSettings(SettingsForCatalog.class);
-            log.info("Последняя страница, где был пользователь {}", settingsForCatalog.getLastPage());
             return settingsForCatalog.getLastPage();
         } else return 0;
     }
