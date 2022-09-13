@@ -35,8 +35,6 @@ public class PersonalSettingsList {
 
 
     private String parseClassName(Settings text){
-        System.out.println(text);
-        System.out.println(CatalogSettings.class);
         Pattern classNamePattern = Pattern.compile("[.]([A-Z]\\w+)");
         Matcher matcher = classNamePattern.matcher(text.getClass().toString());
         matcher.find();
