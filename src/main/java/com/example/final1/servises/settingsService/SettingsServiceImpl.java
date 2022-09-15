@@ -1,7 +1,8 @@
 package com.example.final1.servises.settingsService;
 
-import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.security.PersonDetails;
+import com.example.final1.servises.personService.impl.entity.Person;
+import com.example.final1.servises.settingsService.api.CantParseException;
 import com.example.final1.servises.settingsService.api.SettingsService;
 import com.example.final1.servises.settingsService.impl.PersonalSettingsList;
 import com.example.final1.servises.settingsService.impl.entity.Settings;
@@ -22,7 +23,6 @@ import java.util.regex.Pattern;
 public class SettingsServiceImpl implements SettingsService {
 
     private final Map<Long, PersonalSettingsList> cash = new HashMap<>();
-    private Authentication authentication;
 
 
     @Override
@@ -69,7 +69,7 @@ public class SettingsServiceImpl implements SettingsService {
 
     //метод получающий ключ текущего пользователя
     private long keyCurrentUser(){
-        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         try {
             Person user = ((PersonDetails) authentication.getPrincipal()).getPerson();
             return user.getId();
@@ -81,18 +81,21 @@ public class SettingsServiceImpl implements SettingsService {
     private long parseIp(String text){
         Pattern ipPattern = Pattern.compile("IpAddress=([\\d|:]+)");
         Matcher matcher = ipPattern.matcher(text);
-        matcher.find();
-        String ipWithColon = matcher.group(1);
-        ipWithColon = ipWithColon.replaceAll("\\D", "");
-        long ip = Integer.valueOf(ipWithColon);
-        return ip;
+        if (matcher.find()){
+            String ipWithColon = matcher.group(1);
+            ipWithColon = ipWithColon.replaceAll("\\D", "");
+            return Integer.parseInt(ipWithColon);
+        } else {
+            throw new CantParseException("Невозможно распарсить строку " + text);
+        }
     }
 
     private <T extends Settings> String parseClassName(Class<T> clazz){
         Pattern classNamePattern = Pattern.compile("[.]([A-Z]\\w+)");
         Matcher matcher = classNamePattern.matcher(clazz.toString());
-        matcher.find();
-        return matcher.group(1);
+        if (matcher.find()){
+            return matcher.group(1);
+        } else throw new CantParseException("Не удалось распарсить " + clazz);
     }
 
 

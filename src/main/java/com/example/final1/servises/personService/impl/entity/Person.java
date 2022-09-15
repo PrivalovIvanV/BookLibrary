@@ -77,9 +77,5 @@ public class Person{
         this.password = "*********";
     }
 
-    public boolean isOwner(int bookId){
-        if (personLibrary == null) return false;
-        return personLibrary.stream().anyMatch(book -> book.getId() == bookId);
-    }
 
 }

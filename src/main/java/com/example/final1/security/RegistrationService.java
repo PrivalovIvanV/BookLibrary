@@ -1,7 +1,6 @@
 package com.example.final1.security;
 
 
-import com.example.final1.servises.imgService.impl.entity.PersonImage;
 import com.example.final1.servises.personService.impl.entity.Person;
 import com.example.final1.servises.personService.impl.repo.PersonRepo;
 import com.example.final1.util.UserRole;
@@ -10,9 +9,7 @@ import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
 

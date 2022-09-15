@@ -47,7 +47,7 @@ public class RestController {
                 .stream().findAny().get();
 
 
-        return ResponseEntity.ok()   //А если все таки нету, то покажем дефолтную
+        return ResponseEntity.ok()   //А если все таки нет, то покажем дефолтную
                 .header("fileName", defaultIm.getOriginalFileName())
                 .contentType(MediaType.valueOf(defaultIm.getContentType()))
                 .contentLength(defaultIm.getSize())
@@ -59,7 +59,7 @@ public class RestController {
     private ResponseEntity<?> getBookImageById(@PathVariable("id") int book_id) {
         BookImage image = bookService.getById(book_id);
 
-        if ( image != null) {         //если аватарка у пользователя есть, то мы ее покаем
+        if ( image != null) {         //если аватарка у пользователя есть, то мы ее покажем
             return ResponseEntity.ok()
                     .header("fileName", image.getOriginalFileName())
                     .contentType(MediaType.valueOf(image.getContentType()))

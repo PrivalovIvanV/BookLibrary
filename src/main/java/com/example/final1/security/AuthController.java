@@ -23,11 +23,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(){
-        System.out.println("человек зашел на сайт");
         return "auth/login";}
-
-
-
 
 
 

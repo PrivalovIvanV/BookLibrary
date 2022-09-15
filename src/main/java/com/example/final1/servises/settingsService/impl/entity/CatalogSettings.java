@@ -43,7 +43,7 @@ public class CatalogSettings implements Settings {
             this.COMICS = COMICS;
             haveAFilter = true;
             if (isAll.equals("allBook")){
-                if (CS == false && FICTION == false && HISTORY == false && COMICS == false) haveAFilter = false;
+                if (!CS && !FICTION && !HISTORY && !COMICS) haveAFilter = false;
                 this.isAll = true;
             } else {
                 this.isAll = false;
@@ -87,7 +87,7 @@ public class CatalogSettings implements Settings {
     private void updatePageStatus(Integer page, String query, String isAll){
 
         if (page == null && isAll == null && (query != null && query.equals(""))) lastSearch = "";
-        if (page != null) lastPage = page.intValue();
+        if (page != null) lastPage = page;
         if ((query != null) && !query.equals("")) lastSearch = query;
         if (((query != null) && !query.equals("")) && page == null) lastPage = 0;
         if (((query != null) && !query.equals("")) && isAll != null) lastSearch = "";

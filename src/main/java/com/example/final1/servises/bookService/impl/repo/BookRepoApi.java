@@ -1,9 +1,8 @@
 package com.example.final1.servises.bookService.impl.repo;
 
 import com.example.final1.servises.bookService.impl.entity.Book;
-import com.example.final1.servises.bookService.impl.util.BookNotFoundException;
+import com.example.final1.servises.bookService.api.BookNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +17,6 @@ public class BookRepoApi {
         return bookRepo.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(q, q);
     }
 
-
     public List<Book> findAll(){
         return bookRepo.findAll();
     }
@@ -29,7 +27,10 @@ public class BookRepoApi {
 
     public Book getBook(int id){
         Optional<Book> book = bookRepo.getBookById(id);
-        if (!book.isPresent()) throw new BookNotFoundException();
+        if (book.isEmpty()) throw new BookNotFoundException();
         return book.get();
+    }
+    public void remove(int id){
+        bookRepo.deleteById(id);
     }
 }

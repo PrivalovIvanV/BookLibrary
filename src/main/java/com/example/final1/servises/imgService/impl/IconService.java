@@ -1,9 +1,11 @@
 package com.example.final1.servises.imgService.impl;
 
 import com.example.final1.servises.bookService.api.BookService;
+import com.example.final1.servises.bookService.api.BookServiceExtended;
 import com.example.final1.servises.imgService.impl.entity.BookImage;
 import com.example.final1.servises.imgService.impl.repo.BookImageRepository;
 import com.example.final1.servises.bookService.impl.entity.Book;
+import com.example.final1.servises.userService.api.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -19,17 +21,17 @@ public class IconService {
 
     private final BookImageRepository bookRepository;
     private final JdbcTemplate jdbcTemplate;
-    private final BookService bookService;
-
+    private final BookServiceExtended bookService;
+//        private final UserService userService;//todo уменьшить связанность кода(этот класс должен обходиться без этого сервиса)
 
 
     @Transactional
     public void saveIcon(BookImage bookImage, int book_id){
-        Book book = bookService.findById(book_id);
+        Book book = bookService.get(book_id);
         book.setBookImage(bookImage);
         bookImage.setBook(book);
 
-        bookService.save(book);
+        bookService.create(book);
         bookRepository.save(bookImage);
     }
 

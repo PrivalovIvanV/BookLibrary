@@ -23,6 +23,7 @@ public class PersonalSettingsList {
     
     public void update(Settings settings){
         String key = parseClassName(settings);
+        log.info("Попытка обновить настройки {}", key);
 
         if (listSettings.containsKey(key)){
             Settings setting = listSettings.get(key);
