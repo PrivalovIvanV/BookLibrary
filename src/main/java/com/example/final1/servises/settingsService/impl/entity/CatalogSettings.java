@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 @Slf4j
 @Getter
 @NoArgsConstructor
@@ -95,6 +97,19 @@ public class CatalogSettings implements Settings {
 
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CatalogSettings that = (CatalogSettings) o;
+        return haveAFilter == that.haveAFilter && CS == that.CS && FICTION == that.FICTION && HISTORY == that.HISTORY && COMICS == that.COMICS && isAll == that.isAll && lastPage == that.lastPage && Objects.equals(lastSearch, that.lastSearch);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(haveAFilter, CS, FICTION, HISTORY, COMICS, isAll, lastSearch, lastPage);
+    }
 
 
 }
