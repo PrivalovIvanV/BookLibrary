@@ -1,4 +1,4 @@
-package com.example.final1.servises.settingsService.util;
+package com.example.final1.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

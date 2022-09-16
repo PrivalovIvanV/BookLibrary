@@ -29,9 +29,6 @@ public class PersonServiceImpl implements UserDetailsService, PersonServiceExten
     private final PersonRepo repo;
 
 
-
-
-
     @Override
     public Person get(int id) {
         if (!isPresent(id)){

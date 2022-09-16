@@ -1,7 +1,7 @@
 package com.example.final1.servises.settingsService.impl;
 
+import com.example.final1.servises.settingsService.api.CantParseException;
 import com.example.final1.servises.settingsService.impl.entity.Settings;
-import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,8 +38,9 @@ public class PersonalSettingsList {
     private String parseClassName(Settings text){
         Pattern classNamePattern = Pattern.compile("[.]([A-Z]\\w+)");
         Matcher matcher = classNamePattern.matcher(text.getClass().toString());
-        matcher.find();
-        return matcher.group(1);
+        if ( matcher.find() ){
+            return matcher.group(1);
+        } else throw new CantParseException("Все классы, которые имплементируют Settings должны начинаться с большой буквы " + text);
     }
 
 }
