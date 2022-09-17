@@ -1,0 +1,7 @@
+spring.jpa.properties.hibernate:
+  dialect: org.hibernate.dialect.PostgreSQLDialect
+  show_sql: false
+
+spring:
+  mvc.hiddenmethod.filter.enabled: true
+  web.resources.add-mappings: true
