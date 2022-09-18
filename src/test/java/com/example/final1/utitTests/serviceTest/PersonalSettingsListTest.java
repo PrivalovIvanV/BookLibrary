@@ -1,6 +1,7 @@
-package com.example.final1.servises.settingsService.impl;
+package com.example.final1.utitTests.serviceTest;
 
 import com.example.final1.servises.settingsService.api.CantParseException;
+import com.example.final1.servises.settingsService.impl.PersonalSettingsList;
 import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
 import com.example.final1.servises.settingsService.impl.entity.Settings;
 import org.junit.Before;

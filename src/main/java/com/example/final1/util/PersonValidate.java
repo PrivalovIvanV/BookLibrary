@@ -17,7 +17,7 @@ public class PersonValidate implements Validator {
 
 
     @Override
-    public void validate(Object target, Errors errors) {        //Проверяем чтобы не создать два аккаунта на один и тот же Email
+    public void validate(Object target, Errors errors) {
         Person person = (Person) target;
         if (!registrationService.isExist(person.getEmail()))
             return;

@@ -1,5 +1,6 @@
-package com.example.final1.servises.settingsService.impl.entity;
+package com.example.final1.utitTests.serviceTest;
 
+import com.example.final1.servises.settingsService.impl.entity.CatalogSettings;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
