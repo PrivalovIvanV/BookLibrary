@@ -3,6 +3,7 @@ package com.example.final1.servises.bookService.impl.entity;
 import com.example.final1.servises.imgService.impl.entity.BookImage;
 import com.example.final1.servises.personService.impl.entity.Person;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,37 +22,28 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
     int id;
 
     @Column(name = "title")
-    private
     String title;
     @Column(name = "author")
-    private
     String author;
     @Column(name = "description")
-    private
     String description;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
-    private
     Person owner;
 
     @Column(name = "taken_data")
-    private
     Date taken_data;
     @Column(name = "is_access")
-    private
     boolean isAccess;
     @Column(name = "book_genres")
-    private
     String book_genres;
 
 
     @OneToOne(mappedBy = "book")
-    private
     BookImage bookImage;
 
 
@@ -71,7 +63,7 @@ public class Book {
         Date currentDate = new Date(System.currentTimeMillis());
         Date diff = new Date(currentDate.getTime() - taken_data.getTime());
         return (diff.getDate() -1);
-   };
+   }
 
 
     public Date dateOfReturn(){
@@ -85,5 +77,6 @@ public class Book {
         taken_data = new Date(System.currentTimeMillis());
         this.owner = owner;
     }
+
 
 }

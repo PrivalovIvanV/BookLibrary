@@ -63,6 +63,7 @@ public class BookServiceImpl implements BookServiceExtended {
     }
 
     @Override
+    @Transactional
     public void removeOwner(int book_id) {
         if (!isPresent(book_id)){
             throw new BookNotFoundException("Ошибка удаления владельца у книги с ID " + book_id + " : такой книги не существует.");

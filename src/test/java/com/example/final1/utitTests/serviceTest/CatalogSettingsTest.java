@@ -19,9 +19,6 @@ public class CatalogSettingsTest {
 
     }
 
-//    @After
-//    public void tearDown() throws Exception {
-//    }
 
     @Test
     public void testNullable() {

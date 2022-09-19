@@ -1,6 +1,6 @@
-package com.example.final1.integratedTests.config;
+package com.example.final1.componentTests.config;
 
-import com.example.final1.integratedTests.AbstractCassForTest;
+import com.example.final1.componentTests.AbstractClassForTest;
 import com.example.final1.security.RegistrationService;
 import com.example.final1.servises.personService.impl.repo.PersonRepo;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -14,7 +14,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @TestConfiguration
-public class RegistrationServiceTestConf extends AbstractCassForTest {
+public class RegistrationServiceTestConf extends AbstractClassForTest {
 
     @MockBean PasswordEncoder encoder;
     @MockBean PersonRepo personRepo;

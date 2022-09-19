@@ -1,6 +1,6 @@
-package com.example.final1.integratedTests.security;
+package com.example.final1.componentTests.security;
 
-import com.example.final1.integratedTests.config.RegistrationServiceTestConf;
+import com.example.final1.componentTests.config.RegistrationServiceTestConf;
 import com.example.final1.security.RegistrationService;
 import com.example.final1.servises.personService.impl.entity.Person;
 import org.junit.Assert;
