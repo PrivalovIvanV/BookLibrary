@@ -157,7 +157,6 @@ public class UserController {
             } else {
                 listWithPage.add(unsortedList.subList(i * 15, (i + 1) * 15));
             }
-
         }
         return listWithPage;
     }
@@ -184,6 +183,5 @@ public class UserController {
             return catalogSettings.getLastSearch();
         } else return "";
     }
-
 
 }
